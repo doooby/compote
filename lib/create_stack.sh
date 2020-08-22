@@ -1,5 +1,11 @@
 set -e
 
+if [ -z $1 ]; then
+  echo "Usage:   create_stack.sh stack_path"
+  echo "    stack_path - for example /opt/my_stack"
+  exit 1
+fi
+
 stack_path=$(realpath $1)
 name=$(basename $stack_path)
 
@@ -15,7 +21,7 @@ echo "--- preparing stack path at $stack_path"
 # create stack path
 mkdir $stack_path
 cd $stack_path
-chown root:"$name" .
+chown root:$name .
 chmod 750 .
 
 stack_conf=stack.conf
@@ -27,25 +33,27 @@ echo "RAILS_ENV=production" >> $stack_conf
 
 mkdir var
 mkdir tmp
-chown root:"$name" tmp
+chown root:$name tmp
 chmod 0770 tmp
 
-ln -s src/ops/bin bin
+git clone --depth 1 --branch v0.1 https://github.com/doooby/compote ops
+ln -s ops/bin bin
 ln -s bin/release _deploy
 
 echo "--- seting up git repository"
 # create git repo
 repository=.git
 git init --bare .git
-chown root:"$name" -R .git
+chown root:$name -R .git
 find $repository -type d | xargs chmod 0770
 find $repository -type f | xargs chmod 440
 
 echo "--- installing git hooks"
 # write build hook
 git_hook=$repository/hooks/post-receive
-cp src/ops/lib/git/post-receive-hook.sh $repository/hooks/post-receive
-chown root:"$name" $git_hook
-chmod 550 $git_hook
+rm -f $git_hook
+ln -s ops/lib/git/post-receive-hook.sh $git_hook
+chgrp -h $name $git_hook
+chmod -h 550 $git_hook
 
 echo "--- finished"

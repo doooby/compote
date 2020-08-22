@@ -50,7 +50,7 @@ function libops_docker_run {
   # $1 = image
   # $2 = docker opts
   # $3 = command
-  cmd="sudo docker run --rm $2 --env-file $stack_path/.env $1 $3"
+  cmd="docker run --rm $2 --env-file $stack_path/.env $1 $3"
   libops_print "exec: \033[35m${cmd}\033[0m"
   $cmd
 }

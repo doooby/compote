@@ -1,0 +1,26 @@
+#!/bin/bash
+set -e
+
+source ops/libops.sh
+libops_print "release of $stack_name started"
+
+build_script=src/.compote/build.sh
+if [ ! -f $build_script ]; then
+  libops_fail_with << HEREDOC
+stack source is missing .compote/build.sh
+HEREDOC
+fi
+source $build_script
+
+release_script=src/.compote/release.sh
+if [ ! -f $release_script ]; then
+  libops_fail_with << HEREDOC
+stack source is missing .compote/release.sh
+HEREDOC
+fi
+source $release_script
+
+libops_print "restarting services"
+bin/compose up -d
+
+libops_print "release of $stack_name finished"

@@ -1,0 +1,23 @@
+#!/bin/bash
+set -e
+
+image=$1
+stage=$2
+
+source ops/libops.sh
+libops_print "building $image:$stage docker image"
+
+stage_path=src/.compote/images/$image/$stage
+docker_ignore=$stage_path/.dockerignore
+docker_file=$stage_path/Dockerfile
+
+ignore_file_lock=$(libops_aquire_dockerignore_lock)
+echo "*" >> $ignore_file_lock
+[ -f $docker_ignore ] && cat $docker_ignore >> $ignore_file_lock
+set +e
+docker build -t $image:$stage -f $docker_file .
+result=$?
+set -e
+
+rm -f $ignore_file_lock
+[ $result = 0 ] || exit 1
