@@ -29,4 +29,11 @@ if [ ! -f ./auto_release ]; then
   exit 0
 fi
 
-/usr/bin/time -p ./auto_release
+if [ ! -f /usr/bin/time ]; then
+  echo "/usr/bin/time not found"
+  ./auto_release
+
+else
+  /usr/bin/time -p ./auto_release
+
+fi

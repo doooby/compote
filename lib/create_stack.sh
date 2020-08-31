@@ -42,8 +42,7 @@ chown root:$name tmp
 chmod 0770 tmp
 
 echo "--- cloning ops lib - compote"
-#git -c advice.detachedHead=false clone -q --depth 1 --branch v0.3 https://github.com/doooby/compote ops
-git -c advice.detachedHead=false clone -q --depth 1 https://github.com/doooby/compote ops
+git -c advice.detachedHead=false clone -q --depth 1 --branch v0.3.0 https://github.com/doooby/compote ops
 # compote check & load it? ( to colorize the output )
 
 echo "--- configuration"
