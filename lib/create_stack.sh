@@ -32,7 +32,7 @@ chown root:$name tmp
 chmod 0770 tmp
 
 echo "--- cloning ops lib - compote"
-git -c advice.detachedHead=false clone -q --depth 1 --branch v0.2.5 https://github.com/doooby/compote ops
+git -c advice.detachedHead=false clone -q --depth 1 --branch v0.2.6 https://github.com/doooby/compote ops
 
 echo "--- linking configuration"
 stack_conf=stack.conf
