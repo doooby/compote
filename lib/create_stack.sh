@@ -44,6 +44,7 @@ chmod 0770 tmp
 echo "--- cloning ops lib - compote"
 #git -c advice.detachedHead=false clone -q --depth 1 --branch v0.3 https://github.com/doooby/compote ops
 git -c advice.detachedHead=false clone -q --depth 1 https://github.com/doooby/compote ops
+# compote check & load it? ( to colorize the output )
 
 echo "--- configuration"
 stack_conf=stack.conf
@@ -84,6 +85,8 @@ cat << HEREDOC
   cd $stack_path
   sudo ./deploy
 --- setup services
+- may require build release
+  (  sudo $stack_path/bin/release  )
 - setup db ?
 - https SSL certs for nginx?
 --- finalize
