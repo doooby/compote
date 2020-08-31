@@ -10,7 +10,7 @@ working_dir=$stack_path/src
 
 if [ ! -d $working_dir ]; then
   echo "detected initial push, cloning working directory"
-  git clone --single-branch --branch master $stack_path/.git $working_dir
+  git clone --single-branch --branch master .git $working_dir
   cd $working_dir
   $stack_path/bin/initialize
 
