@@ -11,17 +11,16 @@ working_dir=$stack_path/src
 if [ ! -d $working_dir ]; then
   echo "detected initial push, cloning working directory"
   git clone --single-branch --branch master .git $working_dir
-  cd $working_dir
-  $stack_path/bin/initialize
+  bin/initialize
 
 else
   cd $working_dir
   git fetch origin
   git reset --hard origin/master
   git clean -fdx
+  cd $stack_path
   echo
 
 fi
 
-cd $stack_path
 [ -f ./auto_release ] && time -p ./auto_release
