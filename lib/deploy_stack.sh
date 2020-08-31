@@ -29,4 +29,4 @@ if [ ! -f ./auto_release ]; then
   exit 0
 fi
 
-time -p ./auto_release
+/usr/bin/time -p ./auto_release
