@@ -29,31 +29,29 @@ touch $stack_conf
 ln -s $stack_conf .env
 echo "STACK_NAME=$name" >> $stack_conf
 echo "STACK_PATH=$stack_path" >> $stack_conf
-echo "RAILS_ENV=production" >> $stack_conf
+echo "RACK_ENV=production" >> $stack_conf
 
 mkdir var
 mkdir tmp
 chown root:$name tmp
 chmod 0770 tmp
 
-git clone --depth 1 --branch v0.1 https://github.com/doooby/compote ops
-ln -s ops/bin bin
-ln -s bin/release _deploy
+git clone --depth 1 --branch v0.2.0 https://github.com/doooby/compote ops
 
-echo "--- seting up git repository"
+ln -s ops/lib/bin bin
+ln -s ops/lib/deploy_stack.sh deploy
+ln -s ops/bin/release _auto_release
+
+echo "--- setting up git repository"
 # create git repo
 repository=.git
+git_hook=$repository/hooks/post-receive
 git init --bare .git
+rm -f $git_hook
 chown root:$name -R .git
 find $repository -type d | xargs chmod 0770
 find $repository -type f | xargs chmod 440
-
-echo "--- installing git hooks"
-# write build hook
-git_hook=$repository/hooks/post-receive
-rm -f $git_hook
-ln -s ops/lib/git/post-receive-hook.sh $git_hook
+ln -s ../../ops/lib/git/post-receive-hook.sh $git_hook
 chgrp -h $name $git_hook
-chmod -h 550 $git_hook
 
 echo "--- finished"

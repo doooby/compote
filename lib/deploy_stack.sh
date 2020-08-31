@@ -6,14 +6,14 @@ if [ $(whoami) != "root" ]; then
   exit 1
 fi
 
-stack_path=$(realpath ..)
+stack_path=$(pwd)
 working_dir=$stack_path/src
 
 if [ ! -d $working_dir ]; then
   echo "detected initial push, cloning working directory"
   git clone --single-branch --branch master $stack_path/.git $working_dir
   cd $working_dir
-  bash $stack_path/ops/lib/init_stack.sh
+  $stack_path/bin/initialize
 
 else
   cd $working_dir
@@ -25,5 +25,4 @@ else
 fi
 
 cd $stack_path
-release_hook=$stack_path/deploy
-[ -f $release_hook ] && time -p $release_hook
+[ -f ./auto_release ] && time -p ./auto_release

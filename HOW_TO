@@ -27,11 +27,12 @@ This sets up all necessary thing to hold the platform on this system:
 In the end, you should not be connecting (and pushing to the repository) as root user (see 1.), but to enable access, add the user being used to connect to the created system group.
  `sudo usermod -a -G $(basename $stack_path) $(whoami)`
 For that to actually take effect, you need to reconnect to the server.
+visudo : `<deployer-name>   ALL=(root) NOPASSWD:<stack-path>/deploy`
 
 allow the deployer user only do that:
  `sudo usermod -a -G $(basename $stack_path) <user>`
  `sudo visudo`
- `<user> ALL=(ALL) NOPASSWD: /<stack-path>/ops/lib/deploy.sh`
+ `<user> ALL=(ALL) ALL NOPASSWD: /<stack-path>/ops/lib/deploy_stack.sh`
 
 ### 4. init the stack using app code
 Next step is to push your code to the server. To do that, first add git remote repository and push to it. the hook will detect it's a first push since the src dir is missing. From that it will checkout working git directory & initialize the stack. on success we can continue to actually start running the services.
@@ -63,10 +64,10 @@ on server: `sudo bash ops/lib/nginx/install_https.sh`
 
 #### 7. enable git push deploy
 now rename the deploy hook to enable push-to-deploy functionality
-on server: `sudo mv _deploy deploy`
+on server: `sudo mv _auto_release auto_release`
 
 Now it should all be done, so you can manually start up the services:
-on server: `sudo bin/compose up -d`
+on server: `sudo bin/release`
 
 Note that the same can be achieved just by pushing next commit to the repository, as the git hook will call the very same command, though only after building new release images.
 

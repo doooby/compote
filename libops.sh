@@ -54,3 +54,17 @@ function libops_docker_run {
   libops_print "exec: \033[35m${cmd}\033[0m"
   $cmd
 }
+
+function libops_script_run {
+  libops_assert_stack_path
+
+  # $1 = script name
+  file_path=$stack_path/src/.compote/$1
+  if [ ! -f $file_path ]; then
+    libops_fail_with << HEREDOC
+script .compote/$1 is not present in source code
+HEREDOC
+  fi
+
+  source $file_path
+}
