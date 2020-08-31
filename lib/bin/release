@@ -2,13 +2,13 @@
 set -e
 
 source ops/libops.sh
-libops_print "release of $stack_name started"
+libops_print "compote: release of $stack_name started"
 
 libops_script_run build.sh
 
-libops_script_run release.sh
+libops_script_run deploy.sh
 
-libops_print "restarting services"
+libops_print "compote: restarting services"
 bin/compose up -d
 
-libops_print "release of $stack_name finished"
+libops_print "compote: release of $stack_name finished"

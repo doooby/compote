@@ -9,8 +9,9 @@ stack_path=$(pwd)
 working_dir=$stack_path/src
 
 if [ ! -d $working_dir ]; then
-  echo "detected initial push, cloning working directory"
+  echo "detected initial state, cloning working directory"
   git clone --single-branch --branch master .git $working_dir
+  echo "running recipe src/.compote/init.sh"
   bin/initialize
 
 else

@@ -2,8 +2,8 @@
 set -e
 
 source ops/libops.sh
-libops_print "initializing stack $stack_name ($stack_path)"
+libops_print "compote: initializing stack $stack_name ($stack_path)"
 
 libops_script_run init.sh
 
-libops_print "init of $stack_name finished"
+libops_print "compote: init of $stack_name finished"

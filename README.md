@@ -9,8 +9,12 @@ then:
 #curl -o /tmp/compote https://raw.githubusercontent.com/doooby/compote/v0.3.0/lib/create_stack.sh
 curl -o /tmp/compote https://raw.githubusercontent.com/doooby/compote/master/lib/create_stack.sh
 less /tmp/compote # read before execute
-bash /tmp/compote "/opt/my-stack-name"
+stack=/opt/my-stack
+bash /tmp/compote $stack
 ```
+
+and follow on more instructions
+(you can `cat $stack/HOW_TO`)
 
 ## stack structure
 ```
@@ -18,10 +22,13 @@ bash /tmp/compote "/opt/my-stack-name"
     stack.conf - stack variables
     .dockerignore - virtual created on demand
     .env - symlink to stack.conf
-    .git/ - remote repository
-    src/ - git working directory
-    ops/ - compote files
-    bin/ - symlink for ops/lib/bin
+    .git/ - remotely accessible repository
+    deploy - link to after push script
+    release - compote recipes for building & deploying new release
+            - rename release -> _release to disable that (init state)
+    src/ - git working dir
+    ops/ - compote source files
+    bin/ - symlink to ops/lib/bin
     var/ - stack data
-    tmp/ - for live containers mounting
+    tmp/ - public dir
 ```

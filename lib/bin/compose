@@ -2,6 +2,6 @@
 set -e
 
 source ops/libops.sh
-libops_print "composing stack $stack_name"
+libops_print "compote: running docker-compose for stack $stack_name"
 
 docker-compose -f src/.compote/docker-compose.yml -p $stack_name "$@"
