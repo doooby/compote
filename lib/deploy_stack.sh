@@ -9,9 +9,9 @@ stack_path=$(pwd)
 working_dir=$stack_path/src
 
 if [ ! -d $working_dir ]; then
-  echo "detected initial state, cloning working directory"
+  echo "compote: detected initial state, cloning working directory"
   git clone --single-branch --branch master .git $working_dir
-  echo "running recipe src/.compote/init.sh"
+  echo "compote: running recipe src/.compote/init.sh"
   bin/initialize
 
 else
@@ -24,4 +24,9 @@ else
 
 fi
 
-[ -f ./auto_release ] && time -p ./auto_release
+if [ ! -f ./auto_release ]; then
+  echo "compote: auto_release disabled"
+  exit 0
+fi
+
+time -p ./auto_release

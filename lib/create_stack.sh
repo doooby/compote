@@ -82,7 +82,6 @@ cat << HEREDOC
 --- push
 --- build
   cd $stack_path
-  sudo bin/initialize
   sudo ./deploy
 --- setup services
 - setup db ?
