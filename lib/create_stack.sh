@@ -32,7 +32,7 @@ chown root:$name tmp
 chmod 0770 tmp
 
 echo "--- cloning ops lib - compote"
-git -c advice.detachedHead=false clone -q --depth 1 --branch v0.2.2 https://github.com/doooby/compote ops
+git -c advice.detachedHead=false clone -q --depth 1 --branch v0.2.3 https://github.com/doooby/compote ops
 
 echo "--- linking configuration"
 stack_conf=stack.conf
@@ -44,7 +44,7 @@ echo "RACK_ENV=production" >> $stack_conf
 
 ln -s ops/lib/bin bin
 ln -s bin/release _auto_release
-printf '#!/bin/bash\nexec ops/lib/deploy_stack.sh\n' > deploy
+printf '#!/bin/bash\nbash ops/lib/deploy_stack.sh\n' > deploy
 chmod +x deploy
 
 echo "--- setting up git repository"
