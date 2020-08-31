@@ -31,7 +31,7 @@ function libops_print {
       ;;
 
     *)
-      msg="> $2"
+      msg="> $1"
       ;;
 
   esac
