@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+-e
 
 git diff --exit-code --quiet
 differs=$?
@@ -14,10 +15,16 @@ next_version=(
     $(( ${previous_version[2]} + 1 ))
 )
 #previous_version="$( IFS=.; printf '%s' "${previous_version[*]}" )"
-next_version="$( IFS=.; printf '%s' "${next_version[*]}" )"
 
-echo "tagging as $next_version"
-echo "$next_version" > VERSION
-git commit -a -m "release $next_version"
-git tag "$next_version"
+major="$( IFS=.; printf '%s' "${next_version[@]:0:2}" )"
+minor="$( IFS=.; printf '%s' "${next_version[@]:0:3}" )"
+
+echo "releasing as $minor"
+echo "$minor" > VERSION
+git commit -a -m "release $minor"
+
+$( git push -f --delete origin "$major" 2&> /dev/null )
+git tag "$major"
+git tag "$minor"
+
 git push --tags origin "$(git branch --show-current)"
