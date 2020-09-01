@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+git diff --exit-code --quiet
+differs=$?
+if [ $differs -ne 0 ]; then
+    echo "commit changes first"
+    #exit 1
+fi
+
+IFS='.' read -ra previous_version <<< $(cat VERSION)
+next_version=(
+    ${previous_version[0]}
+    ${previous_version[1]}
+    $(( ${previous_version[2]} + 1 ))
+)
+#previous_version="$( IFS=.; printf '%s' "${previous_version[*]}" )"
+next_version="$( IFS=.; printf '%s' "${next_version[*]}" )"
+
+echo "tagging as $next_version"
+echo "$next_version" > VERSION
+git commit -a -m "release $next_version"
+git tag "$next_version"
+git push --tags origin "$(git branch --show-current)"
