@@ -6,8 +6,7 @@ read HOW_TO to familiarize yourself with the process before running the create_s
 
 then:
 ```shell script
-curl -o /tmp/compote https://raw.githubusercontent.com/doooby/compote/v0.3.1/lib/create_stack.sh
-#curl -o /tmp/compote https://raw.githubusercontent.com/doooby/compote/master/lib/create_stack.sh
+curl -o /tmp/compote https://raw.githubusercontent.com/doooby/compote/0.4/lib/create_stack.sh
 less /tmp/compote # read before execute
 stack=/opt/my-stack
 bash /tmp/compote $stack
