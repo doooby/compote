@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+# bin/initialize
+#   This script runs .compote/init.sh
+#   which is meant to build base docker images
+#   and other initial customisation
+
 source ops/libops.sh
 libops_print "compote: initializing stack $stack_name ($stack_path)"
 

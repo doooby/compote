@@ -16,6 +16,23 @@ fi
 stack_path=$(realpath $1)
 name=$(basename $stack_path)
 
+# COMPOTE:   sudo bash ./create_stack.sh stack_path
+#   stack_path - e.g. /opt/my-service
+#
+#   requires to be run as root
+#
+#   For next steps:
+#   See HEREDOC at the end of this file
+#
+#   This script in human language:
+#   1. ensures root user
+#   2. sets up a stack path
+#      (see directory structure - README.md)
+#   3. provides privileges schema
+#   4. installs compote library
+#   5. sets up git repository
+#      also installs a hook to provide git push deploy
+
 if [ $(whoami) != "root" ]; then
   echo "this has to be run as root (sudo?)"
   exit 1
@@ -80,14 +97,15 @@ cat << HEREDOC
 - using:   visudo
   \$(whoami)   ALL=(root)   NOPASSWD:$stack_path/deploy
 --- push
+--- config ?
 --- build
   cd $stack_path
   sudo ./deploy
---- setup services
+--- prepare services
 - may require build release
   (  sudo $stack_path/bin/release  )
 - setup db ?
-- https SSL certs for nginx?
+- https SSL certs for nginx ?
 --- finalize
   sudo mv _auto_release auto_release
 - now every push triggers full deploy

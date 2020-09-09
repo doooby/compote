@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+# bin/release
+#   This script represents the full release process
+#   For that it applies .compote/build.sh & .compote/deploy.sh
+#   And then this makes the switch to new containers.
+
 source ops/libops.sh
 libops_print "compote: release of $stack_name started"
 

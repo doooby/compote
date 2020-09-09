@@ -4,6 +4,10 @@ set -e
 image=$1
 stage=$2
 
+# bin/build_image image stage
+#   This builds selected docker container
+#   The previous version is overwritten
+
 source ops/libops.sh
 libops_print "compote: building $image:$stage docker image"
 
