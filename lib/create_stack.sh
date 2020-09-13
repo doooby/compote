@@ -103,12 +103,13 @@ cat << HEREDOC
   sudo ./deploy
 --- prepare services
 - may require build release
-  (  sudo $stack_path/bin/release  )
+  (  sudo bin/release  )
 - setup db ?
 - https SSL certs for nginx ?
+  ( sudo bash ops/lib/nginx/install_https.sh )
 --- finalize
   sudo mv _auto_release auto_release
 - now every push triggers full deploy
-  (  sudo $stack_path/deploy  )
+  (  sudo ./deploy  )
 ---
 HEREDOC
