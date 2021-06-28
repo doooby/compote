@@ -1,5 +1,5 @@
 # compote
-docker-compose based stack ops
+docker-compose based stack ops for simple git push deployment of dockerized application
 
 ## create stack
 read HOW_TO to familiarize yourself with the process before running the create_stack.sh script.
