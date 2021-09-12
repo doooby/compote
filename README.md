@@ -6,10 +6,11 @@ read HOW_TO to familiarize yourself with the process before running the create_s
 
 then:
 ```shell script
-curl -o /tmp/compote https://raw.githubusercontent.com/doooby/compote/master/lib/create_stack.sh
+version=master
+curl -o /tmp/compote https://raw.githubusercontent.com/doooby/compote/$version/lib/create_stack.sh
 less /tmp/compote # read before execute
 stack=/opt/my-stack
-bash /tmp/compote $stack
+bash /tmp/compote $stack $version
 ```
 
 and follow on more instructions
