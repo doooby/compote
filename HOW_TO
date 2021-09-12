@@ -38,7 +38,7 @@ allow the deployer user only do that:
 Next step is to push your code to the server. To do that, first add git remote repository and push to it. the hook will detect it's a first push since the src dir is missing. From that it will checkout working git directory & initialize the stack. on success we can continue to actually start running the services.
 
 on local:  `git remote add production <server>:<stack-path>/.git`
-on local:  `git push production master`
+on local:  `git push production main`
 
 #### 5. import DB or create new
 The app needs it's database, which is postgresql. We keep it's data at /opt/ema/var/pg_data. So you need to run the service and import your existing data or create new DB. We use app image also as it has tooling to work with the DB. Like rails itself, pg_restore, psql, etc.

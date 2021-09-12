@@ -10,14 +10,14 @@ working_dir=$stack_path/src
 
 if [ ! -d $working_dir ]; then
   echo "compote: detected initial state, cloning working directory"
-  git clone --single-branch --branch master .git $working_dir
+  git clone --single-branch --branch main .git $working_dir
   echo "compote: running recipe src/.compote/init.sh"
   bin/initialize
 
 else
   cd $working_dir
   git fetch origin
-  git reset --hard origin/master
+  git reset --hard origin/main
   git clean -fdx
   cd $stack_path
   echo
