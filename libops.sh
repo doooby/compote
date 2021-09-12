@@ -55,14 +55,6 @@ function libops_docker_run {
   $cmd
 }
 
-function libops_docker_build {
-  libops_assert_stack_path
-
-  cmd="docker build $@"
-  libops_print "exec: \033[35m${cmd}\033[0m"
-  $cmd
-}
-
 function libops_script_run {
   libops_assert_stack_path
 

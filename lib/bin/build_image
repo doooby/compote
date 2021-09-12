@@ -19,7 +19,10 @@ ignore_file_lock=$(libops_aquire_dockerignore_lock)
 echo "*" >> $ignore_file_lock
 [ -f $docker_ignore ] && cat $docker_ignore >> $ignore_file_lock
 set +e
-libops_docker_build -f $docker_file -t $stack_name--$image:$stage --build-arg STACK_NAME=$stack_name .
+
+build_cmd="docker build -f $docker_file -t $stack_name--$image:$stage --build-arg STACK_NAME=$stack_name ."
+libops_print "exec: \033[35m${build_cmd}\033[0m"
+$build_cmd
 result=$?
 set -e
 
