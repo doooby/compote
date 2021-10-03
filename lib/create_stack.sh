@@ -99,9 +99,6 @@ cat << HEREDOC
   this ma take a while as base images are built
 --- config
   set your $stack_path/stack.conf
---- build images
-  simulate a deploy:
-  \` ( cd $stack_path && sudo ./deploy ) \`
 --- prepare services
 - may require build release
   \`  sudo bin/release  \`
