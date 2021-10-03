@@ -95,7 +95,7 @@ cat << HEREDOC
   sudo usermod -a -G \$(basename $stack_path) \$(whoami)
 --- make him sudoer
 - using:   visudo
-  \$(whoami)   ALL=(root)   NOPASSWD:$stack_path/deploy
+  $(whoami)   ALL=(root)   NOPASSWD:$stack_path/deploy
 --- push
 --- config ?
 --- build
