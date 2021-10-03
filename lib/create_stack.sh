@@ -104,7 +104,8 @@ cat << HEREDOC
   \` ( cd $stack_path && sudo ./deploy ) \`
 --- prepare services
 - may require build release
-  (  sudo bin/release  )
+  \`  sudo bin/release  \`
+  \` sudo bin/compose run --rm app bash \`
 - setup db ?
 - https SSL certs for nginx ?
   ( sudo bash ops/lib/nginx/install_https.sh )
