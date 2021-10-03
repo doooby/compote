@@ -88,19 +88,20 @@ ln -s ../../ops/lib/git/post-receive-hook.sh $git_hook
 chgrp -h $name $git_hook
 
 cat << HEREDOC
---- finished
-
 ------ TODO: ------
 --- create a deployer:
-  sudo usermod -a -G \$(basename $stack_path) \$(whoami)
---- make him sudoer
-- using:   visudo
-  $(whoami)   ALL=(root)   NOPASSWD:$stack_path/deploy
+  ` sudo usermod -a -G \$(basename $stack_path) \$(whoami) `
+  --- optional: make him sudoer
+    setting this allow you to invoke deployment
+    sudo visudo   to add:
+    $(whoami)   ALL=(root)   NOPASSWD:$stack_path/deploy
 --- push
---- config ?
---- build
-  cd $stack_path
-  sudo ./deploy
+  this ma take a while as base images are built
+--- config
+  set your $stack_path/stack.conf
+--- build images
+  simulate a deploy:
+  ` ( cd $stack_path && sudo ./deploy ) `
 --- prepare services
 - may require build release
   (  sudo bin/release  )
