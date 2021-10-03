@@ -38,17 +38,17 @@ if [ $(whoami) != "root" ]; then
   exit 1
 fi
 
-echo "------ creating COMPOTE stack -> $stack_path ------"
+echo "------ COMPOTE $stack_path ------"
 # require confirmation
 #   - about -d param
 [ -d $stack_path ] && echo "hint:   rm -rf $stack_path"
 
-echo "--- setting up privileges for $name"
+echo "setting up privileges for $name"
 if ! grep "^$name:" /etc/group > /dev/null; then
   groupadd $name
 fi
 
-echo "--- preparing stack tree at $stack_path"
+echo "preparing stack tree at $stack_path"
 mkdir $stack_path
 cd $stack_path
 chown root:$name .
@@ -58,11 +58,11 @@ mkdir tmp
 chown root:$name tmp
 chmod 0770 tmp
 
-echo "--- cloning ops lib - compote"
+echo "cloning ops lib - compote"
 git -c advice.detachedHead=false clone -q --depth 1 --branch $version https://github.com/doooby/compote ops
 # compote check & load it? ( to colorize the output )
 
-echo "--- configuration"
+echo "configuration"
 stack_conf=stack.conf
 touch $stack_conf
 ln -s $stack_conf .env
@@ -76,7 +76,7 @@ ln -s ops/lib/bin bin
 ln -s bin/release _auto_release
 ln -s ops/lib/deploy_stack.sh deploy
 
-echo "--- setting up git repository"
+echo "setting up git repository"
 repository=.git
 git_hook=$repository/hooks/post-receive
 git init -q --bare .git
@@ -88,24 +88,25 @@ ln -s ../../ops/lib/git/post-receive-hook.sh $git_hook
 chgrp -h $name $git_hook
 
 cat << HEREDOC
------- TODO: ------
---- create a deployer:
+
+------ COMPOTE TODO: ------
+create a deployer:
   \` sudo usermod -a -G \$(basename $stack_path) \$(whoami) \`
-  --- optional: make him sudoer
+  optional: make him sudoer
     setting this allow you to invoke deployment
     sudo visudo   to add:
     $(whoami)   ALL=(root)   NOPASSWD:$stack_path/deploy
---- push
+push
   this ma take a while as base images are built
---- config
+config
   set your $stack_path/stack.conf
---- prepare services
-  --- may want to run a first release to download the rest of dependencies
+prepare services
+  may want to run a first release to download the rest of dependencies
     \`  sudo bin/release  \`
-  --- setup db ?
-  ---- https SSL certs for nginx ?
+  setup db ?
+  https SSL certs for nginx ?
     \` sudo bash ops/lib/nginx/install_https.sh \`
---- toggle on git-push-release
+toggle on git-push-release
   sudo mv _auto_release auto_release
 
 done
