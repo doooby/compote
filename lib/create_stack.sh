@@ -1,7 +1,7 @@
 set -e
 
 # $1 - stack-path
-# $2 - version - default: master
+# $2 - version - default: main
 
 if [ -z $1 ]; then
   cat << HEREDOC
@@ -14,7 +14,7 @@ fi
 
 stack_path=$(realpath $1)
 name=$(basename $stack_path)
-version=${2:-master}
+version=${2:-main}
 
 # COMPOTE:   sudo bash ./create_stack.sh stack_path
 #   stack_path - e.g. /opt/my-service
