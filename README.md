@@ -6,7 +6,7 @@ read HOW_TO to familiarize yourself with the process before running the create_s
 
 then:
 ```shell script
-version=master
+version=main
 curl -o /tmp/compote https://raw.githubusercontent.com/doooby/compote/$version/lib/create_stack.sh
 less /tmp/compote # read before execute
 stack=/opt/my-stack
