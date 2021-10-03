@@ -90,7 +90,7 @@ chgrp -h $name $git_hook
 cat << HEREDOC
 ------ TODO: ------
 --- create a deployer:
-  ` sudo usermod -a -G \$(basename $stack_path) \$(whoami) `
+  \` sudo usermod -a -G \$(basename $stack_path) \$(whoami) \`
   --- optional: make him sudoer
     setting this allow you to invoke deployment
     sudo visudo   to add:
@@ -101,7 +101,7 @@ cat << HEREDOC
   set your $stack_path/stack.conf
 --- build images
   simulate a deploy:
-  ` ( cd $stack_path && sudo ./deploy ) `
+  \` ( cd $stack_path && sudo ./deploy ) \`
 --- prepare services
 - may require build release
   (  sudo bin/release  )
