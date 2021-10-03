@@ -100,15 +100,13 @@ cat << HEREDOC
 --- config
   set your $stack_path/stack.conf
 --- prepare services
-- may require build release
-  \`  sudo bin/release  \`
-  \` sudo bin/compose run --rm app bash \`
-- setup db ?
-- https SSL certs for nginx ?
-  ( sudo bash ops/lib/nginx/install_https.sh )
---- finalize
+  --- may want to run a first release to download the rest of dependencies
+    \`  sudo bin/release  \`
+  --- setup db ?
+  ---- https SSL certs for nginx ?
+    \` sudo bash ops/lib/nginx/install_https.sh \`
+--- toggle on git-push-release
   sudo mv _auto_release auto_release
-- now every push triggers full deploy
-  (  sudo ./deploy  )
----
+
+done
 HEREDOC
