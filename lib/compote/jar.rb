@@ -17,6 +17,17 @@ module Compote
       dir
     end
 
+    def checkout_source!
+      Compote.run <<-COMMAND
+( \
+  cd src
+  git fetch origin && \
+  git reset --hard origin/main && \
+  git clean -fdx \
+)
+COMMAND
+    end
+
     def image_path image_name
       "#{IMAGES_PATH}/#{image_name}"
     end

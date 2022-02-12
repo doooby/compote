@@ -7,17 +7,20 @@ module Compote
     module Brew
 
       def self.run! arguments
+        jar_name = arguments.shift
+        jar = Jar.new jar_name
+        jar.open_dir!
+
         unless %x[whoami] == 'root'
           puts "needs to be run as root".yellow
           exit 1
         end
 
-        jar_name = arguments.shift
-        jar = Jar.new jar_name
-        jar.open_dir!
+        jar.checkout_source!
 
         Object.const_set 'JAR', jar
         load Compote::Jar::RECIPE_PATH
+
         puts 'recipe brewed successfully'.green
         Compote.exec "#{jar.command_compose} up -d"
       end

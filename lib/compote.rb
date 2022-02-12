@@ -39,7 +39,7 @@ module Compote
   def self.jar_dir! name
     jar = Compote.jars_dir!.join name
     unless Dir.exist? jar
-      puts "no jar exists at #{jar}".yellow
+      puts "no jar with name #{jar} exists".yellow
       exit 1
     end
     jar

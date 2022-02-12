@@ -4,12 +4,12 @@ require LIB_PATH.join('compote.rb')
 
 module Compote
   module Commands
-    module Jars
+    module Jar
 
       def self.run! arguments
         command = arguments.shift
         CommandRunner.new(command).parse! do |parser|
-          parser.banner = 'compote-jars [command]'
+          parser.banner = 'compote-jar [command]'
           parser.on('list', 'lists jars') do
             List.call arguments
           end
@@ -18,6 +18,9 @@ module Compote
           end
           parser.on('destroy', 'destroys a jar') do
             Destroy.call arguments
+          end
+          parser.on('console', 'opens irb session in the jar') do
+            Console.call arguments
           end
         end
       end
@@ -53,6 +56,10 @@ module Compote
           prepare_source name, jar
           Compote.run 'ln -s jar.conf .env'
           Compote.run 'chgrp -h compote .env'
+
+          # close src
+          # git clone --single-branch --branch main .git $working_dir
+
           puts "created a jar at  #{jar.join '.git'}".green
         end
 
@@ -88,6 +95,17 @@ module Compote
           input = gets.strip
           puts ">#{input}<"
           Compote.run "rm -r #{dir}" if input == 'y'
+        end
+      end
+
+      module Console
+        def self.call arguments
+          name = arguments.shift
+          jar = Jar.new name
+          jar.open_dir!
+          require 'irb'
+          binding.irb
+          puts 'done'
         end
       end
 
