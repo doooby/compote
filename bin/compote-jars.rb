@@ -3,5 +3,5 @@ require 'pathname'
 LIB_PATH = Pathname.new(__dir__).join '../lib'
 
 require LIB_PATH.join('compote/commands/git.rb')
-Compote::Commands::Git.run! ARGV
+Compote::Commands::Jars.run! ARGV
 

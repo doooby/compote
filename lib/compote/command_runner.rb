@@ -12,7 +12,7 @@ module Compote
       yield parser
       command = parser.find_command @command
       unless command
-        puts "unknown command #{@command}".red
+        puts "unknown command #{@command}".yellow
         puts
         puts parser.help
         exit 1

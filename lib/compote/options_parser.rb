@@ -12,7 +12,7 @@ module Compote
         begin
           options_parser.parse! @arguments
         rescue => e
-          puts "error [#{e.class.name}] #{e}".red
+          puts "error [#{e.class.name}] #{e}".yellow
           puts "\twhile parsing: #{@arguments}"
           puts
           puts options_parser.help
