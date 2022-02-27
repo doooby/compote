@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require LIB_PATH.join('compote.rb')
+require LIB_PATH.join('compote/jar.rb')
 
 module Compote
   module Commands
@@ -41,9 +42,9 @@ module Compote
             exit 1
           end
 
-          jar_dir = Compote.jars_dir!.join name
+          jar_dir = dir.join name
           Compote.run "mkdir -p #{jar_dir}"
-          jar = Jar.new name
+          jar = Compote::Jar.new name
           jar.open_dir!
 
           Compote.run 'mkdir var'
@@ -101,7 +102,7 @@ module Compote
       module Console
         def self.call arguments
           name = arguments.shift
-          jar = Jar.new name
+          jar = Compote::Jar.new name
           jar.open_dir!
           require 'irb'
           binding.irb

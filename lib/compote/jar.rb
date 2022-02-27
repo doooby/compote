@@ -12,8 +12,8 @@ module Compote
 
     def open_dir!
       dir = Compote.jar_dir! @name
-      puts "changed directory to #{dir}"
       Dir.chdir dir
+      puts "changed directory to #{dir}"
       dir
     end
 
@@ -80,11 +80,11 @@ COMMAND
     end
 
     def command_compose
-      <<-COMMAND
+      <<COMMAND
 docker-compose \
   -f src/.compote/docker-compose.yml \
   --env-file .env \
-  -p #{@name} \
+  -p #{@name}
 COMMAND
     end
 
