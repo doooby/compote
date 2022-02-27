@@ -80,7 +80,7 @@ module Compote
 
           Compote.run 'find .git -type d | xargs chmod 0070'
           Compote.run 'find .git -type f | xargs chmod 060'
-          # Compote.run 'chgrp -h compote .git/hooks/post-receive'
+          Compote.run 'chmod 070 .git/hooks/post-receive'
           Compote.run 'chgrp -R compote .git'
         end
       end
