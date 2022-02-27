@@ -32,3 +32,13 @@ and follow on more instructions
     var/ - stack data
     tmp/ - public dir
 ```
+
+--------------------------------
+do `/usr/local/bin/cpt`
+
+#!/usr/bin/env bash
+set -e
+cd /opt/compote
+exec bin/compote "$@"
+
+chmod +x /usr/local/bin/cpt

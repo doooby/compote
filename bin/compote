@@ -5,7 +5,7 @@ cmd=$1
 script="lib/bin/${cmd}.rb"
 
 if [ -f "$script" ]; then
-  sudo bash -ic "ruby $script" ${@:2}
+  sudo bash -ic "ruby $script ${@:2}"
 else
   echo "unknown command: $cmd"
   exit 1
