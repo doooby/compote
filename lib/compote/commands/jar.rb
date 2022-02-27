@@ -67,7 +67,7 @@ module Compote
           Compote.run 'ln -s jar.conf .env'
           Compote.run 'chgrp -h compote .env'
 
-          path = jar.join('.git').underline
+          path = Pathname.new(Dir.pwd).join('.git').underline
           puts "created a jar at #{path}".green
         end
 
