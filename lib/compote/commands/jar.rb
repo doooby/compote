@@ -67,18 +67,21 @@ module Compote
           Compote.run 'ln -s jar.conf .env'
           Compote.run 'chgrp -h compote .env'
 
-          path = Pathname.new(Dir.pwd).join('.git').underline
-          puts "created a jar at #{path}".green
+          path = Pathname.new(Dir.pwd).join '.git'
+          puts "created a jar at #{path.to_s.underline}".green
         end
 
         def self.prepare_git_src jar
           puts 'setting up git repository'
           Compote.run 'git init -q --bare .git'
-          Compote.run 'chgrp -R compote .git'
+
+          hook = LIB_PATH.join 'git_post_receive_hook.sh'
+          Compote.run "cp #{hook} .git/hooks/post-receive"
+
           Compote.run 'find .git -type d | xargs chmod 0070'
           Compote.run 'find .git -type f | xargs chmod 060'
-          # File.delete '.git/hooks/post-receive'
           # Compote.run 'chgrp -h compote .git/hooks/post-receive'
+          Compote.run 'chgrp -R compote .git'
         end
       end
 
