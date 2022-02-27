@@ -47,42 +47,37 @@ module Compote
           jar = Compote::Jar.new name
           jar.open_dir!
 
+          # create structure
           Compote.run 'mkdir var'
           Compote.run 'mkdir tmp'
+
+          # create config
           Compote.run 'touch jar.conf'
+          puts "providing defaults to #{'jar.conf'.blue}"
+          File.write 'jar.conf', jar.default_config
+
+          # correct ownership
           Compote.run 'chgrp -R compote .'
           Compote.run 'chmod 750 .'
           Compote.run 'chmod 0770 tmp'
-          fill_jar_conf name, jar
-          prepare_source name, jar
+
+          prepare_git_src jar
+
+          # connect config
           Compote.run 'ln -s jar.conf .env'
           Compote.run 'chgrp -h compote .env'
 
-          # close src
-          # git clone --single-branch --branch main .git $working_dir
-
-          puts "created a jar at  #{jar.join '.git'}".green
+          path = jar.join('.git').underline
+          puts "created a jar at #{path}".green
         end
 
-        def self.fill_jar_conf name, path
-          puts 'providing defaults to jar.conf'
-          File.write 'jar.conf', [
-            "JAR_NAME=#{name}",
-            "JAR_PATH=#{path}",
-            nil,
-            'RACK_ENV=production',
-            'NODE_ENV=production',
-            nil
-          ].join("\n")
-        end
-
-        def self.prepare_source name, path
+        def self.prepare_git_src jar
           puts 'setting up git repository'
           Compote.run 'git init -q --bare .git'
           Compote.run 'chgrp -R compote .git'
           Compote.run 'find .git -type d | xargs chmod 0070'
           Compote.run 'find .git -type f | xargs chmod 060'
-          File.delete '.git/hooks/post-receive'
+          # File.delete '.git/hooks/post-receive'
           # Compote.run 'chgrp -h compote .git/hooks/post-receive'
         end
       end
@@ -91,10 +86,9 @@ module Compote
         def self.call arguments
           name = arguments.shift
           dir = Compote.jar_dir! name
-          puts "are you sure to destroy jar #{dir} ?"
+          puts "are you sure to destroy jar #{dir.to_s.blue} ?"
           print '[y,n]: '
           input = gets.strip
-          puts ">#{input}<"
           Compote.run "rm -r #{dir}" if input == 'y'
         end
       end

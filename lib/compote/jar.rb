@@ -6,6 +6,8 @@ module Compote
     IGNORE_FILE = '.dockerignore'
     RECIPE_PATH = 'src/.compote/recipe.rb'
 
+    attr_reader :name
+
     def initialize name
       @name = name
     end
@@ -86,6 +88,17 @@ docker-compose \
   --env-file .env \
   -p #{@name}
 COMMAND
+    end
+
+    def default_config
+      [
+        "JAR_NAME=#{name}",
+        "JAR_PATH=#{Dir.pwd}",
+        nil,
+        'RACK_ENV=production',
+        'NODE_ENV=production',
+        nil
+      ].join "\n"
     end
 
   end
