@@ -5,6 +5,7 @@ require 'byebug' unless ENV['PRODUCTION'] == '1'
 require 'pathname'
 require 'optparse'
 require 'open3'
+require 'erb'
 require 'colorize'
 
 module Compote

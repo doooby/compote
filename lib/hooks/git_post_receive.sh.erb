@@ -1,7 +1,8 @@
 #!/bin/bash
+set -e
 while read oldrev newrev refname
 do
-  set -e
   jar_name=$(basename $(realpath ..))
-  sudo ../bin/compote-brew.rb $jar_name
+  cd <%= LIB_PATH %>
+  bash hooks/brew_jar.sh $jar_name
 done

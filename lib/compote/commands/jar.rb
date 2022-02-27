@@ -75,7 +75,10 @@ module Compote
           puts 'setting up git repository'
           Compote.run 'git init -q --bare .git'
 
-          hook = LIB_PATH.join 'git_post_receive_hook.sh'
+          hook_src = LIB_PATH.join 'hooks/git_post_receive.sh.erb'
+          hook_path = '.git/hooks/post-receive'
+          File.delete hook_path if File.exist? hook_path
+          File.write hook_path, ERB.new(File.read hook_src).result(binding)
           Compote.run "cp #{hook} .git/hooks/post-receive"
 
           Compote.run 'find .git -type d | xargs chmod 0070'
