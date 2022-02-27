@@ -80,7 +80,7 @@ COMMAND
     end
 
     def command_compose
-      <<COMMAND
+      <<-COMMAND
 docker-compose \
   -f src/.compote/docker-compose.yml \
   --env-file .env \
