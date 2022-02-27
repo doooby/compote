@@ -1,16 +1,12 @@
 #!/usr/bin/env bash
 set -e
 
-cmd=$0
-echo $cmd
+cmd=$1
 script="lib/bin/${cmd}.rb"
 
 if [ -f "$script" ]; then
-  echo "running $script"
-  echo ${@:2}
-  #sudo bash -ic "ruby $script" ${@:2}
+  sudo bash -ic "ruby $script" ${@:2}
 else
-  echo "unknown command"
+  echo "unknown command: $cmd"
   exit 1
 fi
-#sudo bash -ic "ruby lib/bin/${cmd}.rb" ${@:2}
