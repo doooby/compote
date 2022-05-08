@@ -1,6 +1,27 @@
 # compote v2
 rewrite to ruby. work in progress.
 
+## warning
+this tool requires sudo access for all operations. Take it or leave it.
+
+## install
+note: requires ruby 2.7+ for root user.
+
+```shell
+compote_dest=/opt/compote
+sudo git clone https://github.com/doooby/compote.git $compote_dest
+cd $compote_dest
+
+# optionally switch branch
+sudo git checkout main-v2
+
+# set up the binary for current user
+bin/install.rb ~/compote/bin/cpt
+# log off and on again (added shell alias `cpt`)
+# now you can run
+cpt ls
+```
+
 # compote
 docker-compose based stack ops for simple git push deployment of dockerized application
 

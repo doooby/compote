@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'cli/command_runner'
+
 module Compote
   module Cli
 

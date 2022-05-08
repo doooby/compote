@@ -1,5 +1,8 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require 'pathname'
-LIB_PATH = Pathname.new(Dir.pwd).join 'lib'
+LIB_PATH = Pathname.new(Dir.pwd).join(__FILE__ ).join '../../lib'
 require LIB_PATH.join('compote.rb')
 require LIB_PATH.join('compote/cli.rb')
 

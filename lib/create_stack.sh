@@ -68,7 +68,7 @@ touch $stack_conf
 ln -s $stack_conf .env
 {
   echo "STACK_NAME=$name";
-  echo "STACK_PATH=$stack_path";
+  echo "BOOK_PATH=$stack_path";
   echo "RACK_ENV=production";
 } >> $stack_conf
 
