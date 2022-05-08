@@ -1,3 +1,3 @@
 Jar.checkout_source!
-require JAR_RECIPE_FILE
+require Jar::JAR_RECIPE_FILE
 puts "recipe finished".green
