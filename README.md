@@ -5,23 +5,25 @@ rewrite to ruby. work in progress.
 this tool requires sudo access for all operations. Take it or leave it.
 
 ## install
-requires ruby 2.7+ for root user.
+requires ruby 2.7+ installed
 ```shell
 sudo gem install colorize tty-prompt erb byebug
 ```
 
+install:
 ```shell
 compote_dest=/opt/compote
 sudo git clone https://github.com/doooby/compote.git $compote_dest
 cd $compote_dest
-
 # optionally switch branch
 sudo git checkout main-v2
-
 # set up the binary for current user
 bin/install.rb ~/compote/bin/cpt
-# log off and on again (added shell alias `cpt`)
-# now you can run
+```
+
+log off and on again
+```shell
+# now you can run compote using alias
 cpt ls
 ```
 

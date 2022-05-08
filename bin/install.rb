@@ -18,7 +18,9 @@ end
 Compote.run "mkdir -p #{File.dirname destination}"
 Compote.run "cp #{LIB_PATH.join 'bin/run_compote.sh'} #{destination}"
 Compote.run "chmod u+x #{destination}"
-File.open '~/.bashrc', 'a' do |f|
+
+bashrc_path = Pathname.new(File.expand_path '~').join '.bashrc'
+File.open bashrc_path, 'a' do |f|
   f.write <<-HEREDOC
 
 # compote
