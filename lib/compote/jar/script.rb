@@ -19,7 +19,7 @@ module Compote
   git reset --hard origin/main && \
   git clean -fdx \
 )
-        COMMAND
+COMMAND
       end
 
     end

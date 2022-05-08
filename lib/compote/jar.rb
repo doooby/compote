@@ -6,7 +6,9 @@ module Compote
     IGNORE_FILE = '.dockerignore'
     RECIPE_PATH = 'src/.compote/recipe.rb'
 
+    require_relative './jar/script'
     include Script
+    require_relative './jar/docker'
     include Docker
 
     attr_reader :name

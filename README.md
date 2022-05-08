@@ -5,8 +5,10 @@ rewrite to ruby. work in progress.
 this tool requires sudo access for all operations. Take it or leave it.
 
 ## install
-note: requires ruby 2.7+ for root user.
+requires ruby 2.7+ for root user.
+```shell
 sudo gem install colorize tty-prompt erb byebug
+```
 
 ```shell
 compote_dest=/opt/compote
