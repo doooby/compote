@@ -42,10 +42,10 @@ module Compote
 
     def self.script_command
       name = Helpers.shift_parameter!(
-        help: 'nwy' # TODO write help
+        help: 'pass script name'
       )
       command = Helpers.shift_parameter!(
-        help: 'nwy' # TODO write help
+        help: 'pass command'
       )
       jar = Compote::Jar.new name
       jar.open_script_dir!
@@ -55,7 +55,7 @@ module Compote
 
     def self.open_jar
       name = Helpers.shift_parameter!(
-        help: 'nwy' # TODO write help
+        help: 'pass script name'
       )
       jar = Compote::Jar.new name
       jar.open_script_dir!

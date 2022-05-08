@@ -3,5 +3,7 @@ set -e
 while read oldrev newrev refname
 do
   script_name=$(basename $(realpath ..))
-  cpt script $script_name
+  if [ -f ../.brew_on_push ]
+    cpt script $script_name
+  fi
 done
