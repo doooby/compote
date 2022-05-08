@@ -19,7 +19,7 @@ BOOK_PATH = ENV.fetch 'BOOK_PATH', LIB_PATH.join('tmp/book')
 module Compote
 
   def self.run system_command
-    puts "#{system_command}".blue
+    puts "#{system_command.grep '  ', "\n\t"}".blue
     output, status = Open3.capture2e system_command
     puts output if output && !output.length.zero?
     unless status.exitstatus.zero?
