@@ -25,7 +25,7 @@ module Compote
         clear_for_build!
         dockerfile_path = prepare_for_build 'base'
         Compote.exec <<-COMMAND
-sudo docker build \
+docker build \
   -f #{dockerfile_path} \
   -t #{image_tag 'base'} \
   . \
@@ -37,10 +37,10 @@ rm #{IGNORE_FILE}
       def stack image, options, command
         Compote.run <<-COMMAND
 docker run --rm app \
-  --env-file .env \  
+  --env-file .env \
   #{options.join '  '} \
   #{image_tag image} \
-  #{command}
+  #{command.strip}
         COMMAND
       end
 
