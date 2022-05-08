@@ -5,10 +5,10 @@ module Compote
 
     def self.create_script
       name = Helpers.shift_parameter!(
-        help: 'nwy' # TODO write help
+        help: 'pass script name'
       )
       script_path = Compote.book_dir!.join name
-      if Dir.exist? book_path
+      if Dir.exist? script_path
         puts "script already exists at #{script_path}".yellow
         exit 1
       else
