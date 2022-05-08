@@ -64,7 +64,10 @@ rm #{IGNORE_FILE}
 
       def prepare_for_build image_name
         path = image_path image_name
-        ignore = File.read "#{path}/#{IGNORE_FILE}"
+        ignore_file = "#{path}/#{IGNORE_FILE}"
+        ignore = if File.exists? ignore_file
+          File.read ignore_file
+        end
         File.write IGNORE_FILE, "*\n#{ignore}"
         "#{path}/Dockerfile"
       end
