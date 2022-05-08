@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'cli/command_runner'
-
 module Compote
   module Cli
 
@@ -58,7 +56,9 @@ module Compote
     end
 
     def self.upgrade
-
+      Dir.chdir LIB_PATH.join('..') do
+        Compote.run "git pull"
+      end
     end
 
     module Helpers
@@ -111,3 +111,5 @@ module Compote
 
   end
 end
+
+require_relative 'cli/command_runner'
