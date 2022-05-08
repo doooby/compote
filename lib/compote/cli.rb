@@ -75,6 +75,7 @@ module Compote
 
         hook_src = LIB_PATH.join 'hooks/git_post_receive.sh.erb'
         hook_path = '.git/hooks/post-receive'
+        raise 'bad'
         File.delete hook_path if File.exist? hook_path
         File.write hook_path, ERB.new(File.read hook_src).result(binding)
         Compote.run "cp #{hook} .git/hooks/post-receive"

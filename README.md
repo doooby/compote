@@ -6,6 +6,7 @@ this tool requires sudo access for all operations. Take it or leave it.
 
 ## install
 note: requires ruby 2.7+ for root user.
+sudo gem install colorize tty-prompt erb byebug
 
 ```shell
 compote_dest=/opt/compote

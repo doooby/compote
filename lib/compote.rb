@@ -4,14 +4,13 @@
 # PRODUCTION
 # BOOK_PATH
 
-require 'byebug' unless ENV['PRODUCTION'] == '1'
+require 'byebug' if ENV['DEBUG'] == '1'
 
 require 'pathname'
-require 'optparse'
 require 'open3'
-require 'erb'
 require 'colorize'
 require 'tty-prompt'
+require 'erb'
 
 module Compote
 
