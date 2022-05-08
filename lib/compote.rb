@@ -14,11 +14,7 @@ require 'tty-prompt'
 unless Object.const_defined? 'LIB_PATH'
   LIB_PATH = Pathname.new(Dir.pwd).join(__FILE__ ).join '..'
 end
-BOOK_PATH = Pathname.new(
-  File.realpath(
-    ENV.fetch 'BOOK_PATH', LIB_PATH.join('tmp/book')
-  )
-)
+BOOK_PATH = ENV.fetch 'BOOK_PATH', LIB_PATH.join('tmp/book')
 
 module Compote
 
@@ -54,7 +50,7 @@ module Compote
 
   def self.book_dir!
     @jars_dir ||= begin
-      path = BOOK_PATH
+      path = Pathname.new File.realpath(BOOK_PATH)
       unless Dir.exist? path
         puts "starting a book at path #{path}".green
         Compote.run "mkdir -p #{path}"
