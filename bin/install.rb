@@ -7,17 +7,17 @@ if destination.nil?
   exit 1
 end
 
-destination = File.realpath destination
 prompt = TTY::Prompt.new
 unless prompt.yes? "are you sure to install the user binary into #{destination} ?"
   exit 1
 end
+Compote.run "mkdir -p #{File.dirname destination}"
+destination = File.realpath destination
 
 require 'pathname'
 LIB_PATH = Pathname.new(Dir.pwd).join(__FILE__ ).join '../../lib'
 require LIB_PATH.join('compote.rb')
 
-Compote.run "mkdir -p #{File.dirname destination}"
 Compote.run "cp #{LIB_PATH.join 'bin/run_compote.sh'} #{destination}"
 Compote.run "chmod u+x #{destination}"
 File.open '~/.bashrc', 'a' do |f|
