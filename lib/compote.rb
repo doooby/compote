@@ -12,6 +12,11 @@ require 'colorize'
 require 'tty-prompt'
 require 'erb'
 
+Object.const_get 'LIB_PATH'
+BOOK_PATH = Pathname.new(
+  ENV.fetch 'BOOK_PATH', LIB_PATH.join('/tmp/book')
+)
+
 module Compote
 
   def self.run system_command
@@ -46,11 +51,10 @@ module Compote
 
   def self.book_dir!
     @jars_dir ||= begin
-      path = BOOK_PATH.join 'book'
+      path = BOOK_PATH
       unless Dir.exist? path
         puts "starting a book at path #{path}".green
-        Compote.run "mkdir #{path}"
-        Compote.run "chown compote:compote #{path}"
+        Compote.run "mkdir -p #{path}"
       end
       path
     end
@@ -75,8 +79,3 @@ module Compote
 end
 
 require_relative 'compote/jar'
-
-BOOK_PATH = Pathname.new(ENV.fetch 'BOOK_PATH', "#{Dir.pwd}/tmp/book")
-unless Dir.exist? BOOK_PATH
-  Dir.mkdir BOOK_PATH
-end

@@ -4,7 +4,7 @@ module Compote
   class Jar
     module Script
 
-      def open_dir!
+      def open_script_dir!
         dir = Compote.script_dir! @name
         Dir.chdir dir
         puts "cd #{dir}".blue
