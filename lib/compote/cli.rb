@@ -50,7 +50,7 @@ module Compote
       jar = Compote::Jar.new name
       jar.open_script_dir!
       Object.const_set 'Jar', jar
-      command! 'script', command
+      Helpers.command! 'script', command
     end
 
     def self.open_jar
@@ -96,12 +96,14 @@ module Compote
         if File.exist? command
           require command
         else
-          puts 'no such command found'.red
+          if command != '-h'
+            puts 'no such command found'.red
+          end
           commands = nil
           Dir.chdir LIB_PATH.join(dir) do
             commands = Dir.glob('*.rb').map{ _1[0..-4] }
           end
-          puts "did you mean any of these:  #{commands.join ' '}"
+          puts "commands:  #{commands.join ' '}"
           exit 1
         end
       end
