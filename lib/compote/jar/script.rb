@@ -12,6 +12,9 @@ module Compote
       end
 
       def checkout_source!
+        unless Dir.exist? 'src'
+          Compote.run 'git clone --single-branch --branch main .git src'
+        end
         Compote.run <<-COMMAND
 ( \
   cd src && \

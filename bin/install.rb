@@ -30,8 +30,8 @@ end
 
 user = `whoami`
 Compote.run <<-HEREDOC
-if sudo ! grep "^$name:" /etc/group > /dev/null; then
-  sudo groupadd $name
+if ! grep "^compote:" /etc/group > /dev/null; then
+  sudo groupadd compote
 fi
 sudo usermod -a -G compote #{user}
 HEREDOC
