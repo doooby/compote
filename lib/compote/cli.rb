@@ -87,6 +87,9 @@ module Compote
         hook_path = '.git/hooks/post-receive'
         File.delete hook_path if File.exist? hook_path
         Compote.run "cp #{hook_src} .git/hooks/post-receive"
+        Compote.run 'chown root:compote -R .git'
+        Compote.run 'find .git -type d | xargs chmod 0070'
+        Compote.run 'find .git -type f | xargs chmod 060'
         Compote.run 'chmod 070 .git/hooks/post-receive'
       end
 

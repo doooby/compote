@@ -27,3 +27,11 @@ File.open bashrc_path, 'a' do |f|
 alias cpt=#{File.realpath destination}
 HEREDOC
 end
+
+user = `whoami`
+Compote.run <<-HEREDOC
+if sudo ! grep "^$name:" /etc/group > /dev/null; then
+  sudo groupadd $name
+fi
+sudo usermod -a -G compote #{user}
+HEREDOC
