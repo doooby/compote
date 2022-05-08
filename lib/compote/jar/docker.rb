@@ -14,7 +14,7 @@ module Compote
 
       def clear_for_build!
         if File.exist? IGNORE_FILE
-          puts '.dockerignore is present.'.yellow
+          puts "#{IGNORE_FILE} is present.".yellow
           puts 'either another build is in progress' +
             ' or the previous one failed.'
           exit 1
@@ -27,10 +27,10 @@ module Compote
         Compote.exec <<-COMMAND
 sudo docker build \
   -f #{dockerfile_path} \
-  -t #{jar.image_tag 'base'} \
+  -t #{image_tag 'base'} \
   . \
 ; \
-rm .dockerignore
+rm #{IGNORE_FILE}
         COMMAND
       end
 
@@ -49,7 +49,7 @@ docker run --rm \
         Compote.exec <<-COMMAND
 docker build \
   -f #{dockerfile_path} \
-  -t #{jar.image_tag image} \
+  -t #{image_tag image} \
   . \
 ; \
 rm #{IGNORE_FILE}

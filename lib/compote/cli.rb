@@ -96,9 +96,7 @@ module Compote
         if File.exist? command
           require command
         else
-          if command != '-h'
-            puts 'no such command found'.red
-          end
+          puts 'no such command found'.red
           commands = nil
           Dir.chdir LIB_PATH.join(dir) do
             commands = Dir.glob('*.rb').map{ _1[0..-4] }
