@@ -13,16 +13,16 @@ module Compote
     end
 
     def open_dir!
-      dir = Compote.jar_dir! @name
+      dir = Compote.script_dir! @name
       Dir.chdir dir
-      puts "changed directory to #{dir}"
+      puts "cd #{dir}".blue
       dir
     end
 
     def checkout_source!
       Compote.run <<-COMMAND
 ( \
-  cd src
+  cd src && \
   git fetch origin && \
   git reset --hard origin/main && \
   git clean -fdx \
@@ -52,14 +52,29 @@ COMMAND
       end
     end
 
-    def prepare_for_build image_name
-      path = image_path image_name
-      ignore = File.read "#{path}/#{IGNORE_FILE}"
-      File.write IGNORE_FILE, "*\n#{ignore}"
-      "#{path}/Dockerfile"
+    def build_base
+      clear_for_build!
+      dockerfile_path = prepare_for_build 'base'
+      Compote.exec <<-COMMAND
+sudo docker build \
+  -f #{dockerfile_path} \
+  -t #{jar.image_tag 'base'} \
+  . \
+; \
+rm .dockerignore
+COMMAND
     end
 
-    def build_image image
+    def stack image, options, command
+      Compote.run <<-COMMAND
+docker run --rm \
+  --env-file .env \  
+#{options.map "\n  #{_1}\\"}  #{image_tag image} \
+  #{command}
+COMMAND
+    end
+
+    def brew image
       clear_for_build!
       dockerfile_path = prepare_for_build image
       Compote.exec <<-COMMAND
@@ -69,16 +84,18 @@ docker build \
   . \
 ; \
 rm #{IGNORE_FILE}
-COMMAND
+      COMMAND
     end
 
-    def run_image image, options, command
-      Compote.run <<-COMMAND
-docker run --rm \
-  --env-file .env \  
-#{options.map "\n  #{_1}\\"}  #{image_tag image} \
-  #{command}
-COMMAND
+    def serve args
+      Compote.run "#{command_compose} #{args}"
+    end
+
+    def prepare_for_build image_name
+      path = image_path image_name
+      ignore = File.read "#{path}/#{IGNORE_FILE}"
+      File.write IGNORE_FILE, "*\n#{ignore}"
+      "#{path}/Dockerfile"
     end
 
     def command_compose
@@ -86,7 +103,8 @@ COMMAND
 docker-compose \
   -f src/.compote/docker-compose.yml \
   --env-file .env \
-  -p #{@name}
+  -p #{@name} \
+  \
 COMMAND
     end
 

@@ -1,3 +1,6 @@
+# compote v2
+rewrite to ruby. work in progress.
+
 # compote
 docker-compose based stack ops for simple git push deployment of dockerized application
 

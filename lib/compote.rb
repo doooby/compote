@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# ENV:
+# PRODUCTION
+# STACK_PATH
+
 require 'byebug' unless ENV['PRODUCTION'] == '1'
 
 require 'pathname'
@@ -7,6 +11,9 @@ require 'optparse'
 require 'open3'
 require 'erb'
 require 'colorize'
+require 'tty-prompt'
+
+require_relative 'compote/jar'
 
 module Compote
 
@@ -25,11 +32,26 @@ module Compote
     Kernel.exec system_command
   end
 
-  def self.jars_dir!
+  def self.choose_script!
+    scripts = nil
+    Dir.chdir book_dir! do
+      scripts = Dir.glob('*').select{ File.directory? _1 }
+    end
+
+    if scripts.nil? or scripts.empty?
+      puts 'book is empty'.yellow
+      exit 1
+    else
+      prompt = TTY::Prompt.new
+      prompt.select 'Choose script', scripts
+    end
+  end
+
+  def self.book_dir!
     @jars_dir ||= begin
-      path = STACK_PATH.join 'jars'
+      path = STACK_PATH.join 'book'
       unless Dir.exist? path
-        puts "creating jars path at #{path}".green
+        puts "starting a book at path #{path}".green
         Compote.run "mkdir #{path}"
         Compote.run "chown compote:compote #{path}"
       end
@@ -37,17 +59,20 @@ module Compote
     end
   end
 
-  def self.jar_dir! name
-    jar = Compote.jars_dir!.join name
+  def self.script_dir! name
+    jar = Compote.book_dir!.join name
     unless Dir.exist? jar
-      puts "no jar with name #{jar} exists".yellow
+      puts "no script with name #{jar} exists".yellow
       exit 1
     end
     jar
   end
 
-  def self.require_sudo!
-
+  def self.ensure_i_am_root!
+    unless (%x[whoami]).strip == 'root'
+      puts "needs to be run as root".yellow
+      exit 1
+    end
   end
 
 end
