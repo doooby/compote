@@ -16,7 +16,7 @@ unless Object.const_defined? 'LIB_PATH'
   LIB_PATH = Pathname.new(Dir.pwd).join(__FILE__ ).join '..'
 end
 BOOK_PATH = Pathname.new(
-  ENV.fetch 'BOOK_PATH', LIB_PATH.join('/tmp/book')
+  ENV.fetch 'BOOK_PATH', LIB_PATH.join('tmp/book')
 )
 
 module Compote
@@ -65,7 +65,7 @@ module Compote
   def self.script_dir! name
     jar = Compote.book_dir!.join name
     unless Dir.exist? jar
-      puts "no script with name #{jar} exists".yellow
+      puts "no script with name #{name} exists".yellow
       exit 1
     end
     jar

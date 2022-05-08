@@ -11,10 +11,10 @@ Compote.ensure_i_am_root!
 command = ARGV.shift
 if command
   Compote::CommandRunner.new(command).parse! do |parser|
-    parser.banner = 'compote command [opts]'
+    parser.banner = 'usage:  compote command [opts]'
     parser.on('-h', 'Prints cli help') do
-      # TODO docs
-      puts 'not written yet'
+      puts
+      puts parser.help
       exit 0
     end
     parser.on('new', 'Creates new empty script') do
@@ -32,7 +32,7 @@ if command
     parser.on('upgrade', 'updates this library') do
       Compote::Cli.upgrade
     end
-    parser.on('path', 'updates this library') do
+    parser.on('path', 'prints source path') do
       puts LIB_PATH.join('..')
     end
   end
