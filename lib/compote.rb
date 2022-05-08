@@ -12,7 +12,9 @@ require 'colorize'
 require 'tty-prompt'
 require 'erb'
 
-Object.const_get 'LIB_PATH'
+unless Object.const_defined? 'LIB_PATH'
+  LIB_PATH = Pathname.new(Dir.pwd).join(__FILE__ ).join '..'
+end
 BOOK_PATH = Pathname.new(
   ENV.fetch 'BOOK_PATH', LIB_PATH.join('/tmp/book')
 )
