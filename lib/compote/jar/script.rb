@@ -6,8 +6,8 @@ module Compote
 
       def open_script_dir!
         dir = Compote.script_dir! @name
-        Dir.chdir dir
         puts "cd #{dir}".blue
+        Dir.chdir dir
         dir
       end
 

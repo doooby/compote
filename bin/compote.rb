@@ -15,7 +15,7 @@ if command
     parser.on('-h', 'Prints cli help') do
       # TODO docs
       puts 'not written yet'
-      exit 1
+      exit 0
     end
     parser.on('new', 'Creates new empty script') do
       Compote::Cli.create_script

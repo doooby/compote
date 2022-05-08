@@ -4,11 +4,9 @@ module Compote
   module Cli
 
     def self.create_script
-      name = ARGV.shift
-      if name == '-h'
-        # TODO docs
-      end
-
+      name = Helpers.shift_parameter!(
+        help: 'nwy' # TODO write help
+      )
       script_path = Compote.book_dir!.join name
       if Dir.exist? book_path
         puts "script already exists at #{script_path}".yellow
@@ -43,14 +41,23 @@ module Compote
     end
 
     def self.script_command
-      jar = Compote::Jar.new ARGV.shift
+      name = Helpers.shift_parameter!(
+        help: 'nwy' # TODO write help
+      )
+      command = Helpers.shift_parameter!(
+        help: 'nwy' # TODO write help
+      )
+      jar = Compote::Jar.new name
       jar.open_script_dir!
       Object.const_set 'Jar', jar
-      command! 'script', ARGV.shift
+      command! 'script', command
     end
 
     def self.open_jar
-      jar = Compote::Jar.new ARGV.shift
+      name = Helpers.shift_parameter!(
+        help: 'nwy' # TODO write help
+      )
+      jar = Compote::Jar.new name
       jar.open_script_dir!
       Compote.exec "#{jar.command_compose}  run --rm app bash"
     end
@@ -62,6 +69,15 @@ module Compote
     end
 
     module Helpers
+
+      def self.shift_parameter! help: , **_
+        arg = ARGV.shift
+        if arg.nil? || arg == '-h'
+          puts help
+          exit arg.nil? ? 1 : 0
+        end
+        arg
+      end
 
       def self.prepare_git_src
         puts 'setting up git repository'
