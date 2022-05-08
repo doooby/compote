@@ -35,10 +35,12 @@ rm #{IGNORE_FILE}
       end
 
       def stack image, options, command
+        options = options.join " \\\n  "
         Compote.run <<-COMMAND
 docker run --rm \
   --env-file .env \  
-#{options.map "\n  #{_1}\\"}  #{image_tag image} \
+  #{options} \
+  #{image_tag image} \
   #{command}
         COMMAND
       end
