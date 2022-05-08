@@ -33,11 +33,11 @@ module Compote
       Compote.run 'ln -s jar.conf .env'
 
       path = Pathname.new(Dir.pwd).join '.git'
-      puts "created a jar at #{path.to_s.underline}".green
+      puts "created a script at #{path.to_s.underline}".green
     end
 
     def self.list_scripts
-      Compote.run "ls -l #{Compote.book_dir!}"
+      Compote.run "ls -la #{Compote.book_dir!}"
     end
 
     def self.script_command
@@ -83,15 +83,10 @@ module Compote
         puts 'setting up git repository'
         Compote.run 'git init -q --bare .git'
 
-        hook_src = LIB_PATH.join 'hooks/git_post_receive.sh.erb'
+        hook_src = LIB_PATH.join 'git_hook/post_receive.sh'
         hook_path = '.git/hooks/post-receive'
-        raise 'bad'
         File.delete hook_path if File.exist? hook_path
-        File.write hook_path, ERB.new(File.read hook_src).result(binding)
-        Compote.run "cp #{hook} .git/hooks/post-receive"
-
-        Compote.run 'find .git -type d | xargs chmod 0070'
-        Compote.run 'find .git -type f | xargs chmod 060'
+        Compote.run "cp #{hook_src} .git/hooks/post-receive"
         Compote.run 'chmod 070 .git/hooks/post-receive'
       end
 

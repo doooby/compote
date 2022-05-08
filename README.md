@@ -7,7 +7,7 @@ this tool requires sudo access for all operations. Take it or leave it.
 ## install
 requires ruby 2.7+ installed
 ```shell
-sudo gem install colorize tty-prompt erb byebug
+sudo gem install colorize tty-prompt byebug
 ```
 
 install:

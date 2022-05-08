@@ -1,8 +1,0 @@
-#!/bin/bash
-set -e
-while read oldrev newrev refname
-do
-  jar_name=$(basename $(realpath ..))
-  cd <%= LIB_PATH %>
-  bash hooks/brew_jar.sh $jar_name
-done

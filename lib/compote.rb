@@ -10,13 +10,14 @@ require 'pathname'
 require 'open3'
 require 'colorize'
 require 'tty-prompt'
-require 'erb'
 
 unless Object.const_defined? 'LIB_PATH'
   LIB_PATH = Pathname.new(Dir.pwd).join(__FILE__ ).join '..'
 end
 BOOK_PATH = Pathname.new(
-  ENV.fetch 'BOOK_PATH', LIB_PATH.join('tmp/book')
+  File.realpath(
+    ENV.fetch 'BOOK_PATH', LIB_PATH.join('tmp/book')
+  )
 )
 
 module Compote
