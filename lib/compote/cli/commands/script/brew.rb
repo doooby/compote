@@ -1,3 +1,3 @@
 Jar.checkout_source!
-require Compote::Jar::RECIPE_PATH
+require JAR_RECIPE_FILE
 puts "recipe finished".green

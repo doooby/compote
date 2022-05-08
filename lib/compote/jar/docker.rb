@@ -5,7 +5,7 @@ module Compote
     module Docker
 
       def image_path image_name
-        "#{IMAGES_PATH}/#{image_name}"
+        "#{JAR_CONFIG_PATH}/images/#{image_name}"
       end
 
       def image_tag image_name
@@ -70,7 +70,7 @@ rm #{IGNORE_FILE}
       def command_compose
         <<-COMMAND.strip
 docker-compose \
-  -f src/.compote/docker-compose.yml \
+  -f #{JAR_CONFIG_PATH}/docker-compose.yml \
   --env-file .env \
   -p #{@name}
         COMMAND

@@ -2,9 +2,9 @@
 
 module Compote
   class Jar
-    IMAGES_PATH = 'src/.compote/images'
+    JAR_CONFIG_PATH = 'src/.jar'
+    JAR_RECIPE_FILE = "#{JAR_CONFIG_PATH}/recipe.rb"
     IGNORE_FILE = '.dockerignore'
-    RECIPE_PATH = 'src/.compote/recipe.rb'
 
     require_relative './jar/script'
     include Script
@@ -16,11 +16,6 @@ module Compote
     def initialize name
       @name = name
     end
-
-    # def images
-    #   images = Dir.glob("#{IMAGES_PATH}/*/").map{ _1[0..-2] }
-    #   images.delete 'app-base'
-    # end
 
     def default_config
       [
