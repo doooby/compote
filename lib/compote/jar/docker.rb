@@ -40,7 +40,7 @@ docker run --rm \
   --env-file .env \
   #{options.join '   '} \
   #{image_tag image} \
-  #{command.strip}
+   bash -c "#{command.strip.gsub '"' '\"'}"
         COMMAND
       end
 
