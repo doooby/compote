@@ -59,7 +59,7 @@ module Compote
       )
       jar = Compote::Jar.new name
       jar.open_script_dir!
-      Compote.exec "#{jar.command_compose}  run --rm app bash"
+      Compote.exec "#{jar.command_compose}   run --rm app bash"
     end
 
     def self.upgrade

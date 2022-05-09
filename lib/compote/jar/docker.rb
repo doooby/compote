@@ -60,7 +60,7 @@ rm #{IGNORE_FILE}
       end
 
       def serve args
-        Compote.run "#{command_compose}  #{args}"
+        Compote.run "#{command_compose}   #{args}"
       end
 
       def prepare_for_build image_name
@@ -78,7 +78,7 @@ rm #{IGNORE_FILE}
 docker-compose \
   -f #{JAR_CONFIG_PATH}/docker-compose.yml \
   --env-file .env \
-  -p #{@name}
+  -p jar_#{@name}
         COMMAND
       end
 
