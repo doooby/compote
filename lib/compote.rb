@@ -29,7 +29,7 @@ module Compote
   end
 
   def self.exec system_command
-    puts "#{system_command}".blue
+    puts "#{system_command.gsub '   ', " \\\n  "}".blue
     Kernel.exec system_command
   end
 
