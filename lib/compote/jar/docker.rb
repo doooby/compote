@@ -48,7 +48,7 @@ docker run --rm \
       def brew image
         clear_for_build!
         dockerfile_path = prepare_for_build image
-        Compote.exec <<-COMMAND
+        Compote.run <<-COMMAND
 docker build \
   -f #{dockerfile_path} \
   -t #{image_tag image} \
