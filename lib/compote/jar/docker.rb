@@ -38,7 +38,7 @@ rm #{IGNORE_FILE}
         Compote.run <<-COMMAND
 docker run --rm \
   --env-file .env \
-  #{options.join '  '} \
+  #{options.join '   '} \
   #{image_tag image} \
   #{command.strip}
         COMMAND
