@@ -28,6 +28,7 @@ module Compote
 docker build \
   -f #{dockerfile_path} \
   -t #{image_tag 'base'} \
+  --build-arg SCRIPT_NAME=#{name} \
   . \
 ; \
 rm #{IGNORE_FILE}
