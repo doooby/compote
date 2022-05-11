@@ -20,11 +20,19 @@ module Compote
 
   def self.run system_command
     puts "#{system_command.gsub '   ', " \\\n  "}".blue
-    output, status = Open3.capture2e system_command
-    puts output if output && !output.length.zero?
-    unless status.exitstatus.zero?
-      puts "Exit #{status.exitstatus}".red
-      exit status.exitstatus
+    process = Open3.popen2e system_command do |i, oe, thread|
+      i.close
+      oe.sync = true
+      reader = Thread.new do
+        puts oe.readline until oe.eof?
+      end
+      reader.join
+      thread.join
+      thread.value
+    end
+    unless process.exitstatus.zero?
+      puts "Exit #{process.exitstatus}".red
+      exit process.exitstatus
     end
   end
 
