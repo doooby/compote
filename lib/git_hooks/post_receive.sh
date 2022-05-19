@@ -2,10 +2,10 @@
 set -e
 while read oldrev newrev refname
 do
-  script_name=$(basename $(realpath ..))
+  jar=$(basename $(realpath ..))
   if [ -f ../.brew_on_push ]; then
-    cpt script $script_name brew
+    compote script $jar brew
   else
-    echo "skipping jar brew on push"
+    echo -e "\033[33m.brew_on_push is not present\033[0m"
   fi
 done
