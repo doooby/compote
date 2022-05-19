@@ -70,7 +70,8 @@ module Compote
 
     def self.upgrade
       Dir.chdir LIB_PATH.join('..') do
-        Compote.run 'git pull'
+        user = `stat --format '%U' .`.strip
+        Compote.run "su -c 'git pull' #{user}"
       end
     end
 
