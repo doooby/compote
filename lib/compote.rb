@@ -59,8 +59,8 @@ module Compote
   def self.shelf_dir!
     @shelf_dir ||= begin
       path = ENV.fetch 'SHELF_PATH', LIB_PATH.join('tmp/shelf')
-      path = Pathname.new File.realpath(path)
       unless Dir.exist? path
+        path = File.realpath path
         puts "creating new shelf for jars at path #{path}".yellow
         Compote.run "mkdir -p #{path}"
       end
