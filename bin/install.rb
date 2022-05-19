@@ -1,13 +1,12 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'pathname'
-LIB_PATH = Pathname.new(Dir.pwd).join(__FILE__ ).join '../../lib'
-require LIB_PATH.join('compote.rb')
+require_relative '../lib/bin/base'
 
 destination = ARGV.shift
 if destination.nil?
-  puts 'use:  bin/install.rb destination'.red
+  puts 'use:  bin/install.rb destination'.yellow
+  puts 'destination = where to install the user runnable script'
   exit 1
 end
 

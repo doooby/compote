@@ -24,7 +24,7 @@ module Compote
       def build_base
         clear_for_build!
         dockerfile_path = prepare_for_build 'base'
-        Compote.exec <<-COMMAND
+        Compote.run <<-COMMAND
 docker build \
   -f #{dockerfile_path} \
   -t #{image_tag 'base'} \

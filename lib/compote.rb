@@ -7,7 +7,8 @@
 require 'byebug' if ENV['DEBUG'] == '1'
 
 require 'pathname'
-require 'open3'
+require 'io/console'
+require 'pty'
 require 'colorize'
 require 'tty-prompt'
 
@@ -18,29 +19,30 @@ BOOK_PATH = ENV.fetch 'BOOK_PATH', LIB_PATH.join('tmp/book')
 
 module Compote
 
+  def self.with_gracious_interrupt
+    yield
+  rescue Interrupt
+    puts "compote interrupted".red
+  end
+
   def self.run system_command
     puts "#{system_command.gsub '   ', " \\\n  "}".blue
-    process = Open3.popen2e system_command do |i, oe, thread|
-      i.close
-      oe.sync = true
-      reader = Thread.new do
-        puts oe.readline until oe.eof?
-      end
-      reader.join
-      thread.join
-      thread.value
+
+    command_out, _, pid = PTY.spawn system_command
+    loop do
+      $stdout.putc command_out.getc || ''
+    rescue Errno::EIO # when spawned process terminates, the io just crashes
+      break
     end
-    unless process.exitstatus.zero?
-      puts "Exit #{process.exitstatus}".red
-      exit process.exitstatus
+
+    status = Process::Status.wait pid
+    unless status.exitstatus.zero?
+      puts "spawned process exited with #{status.exitstatus}".red
+      exit status.exitstatus
     end
   end
 
-  def self.exec system_command
-    puts "#{system_command.gsub '   ', " \\\n  "}".blue
-    Kernel.exec system_command
-  end
-
+  # TODO rename to recipes
   def self.choose_script!
     scripts = nil
     Dir.chdir book_dir! do
@@ -56,6 +58,7 @@ module Compote
     end
   end
 
+  # TODO rename to recipes_book_dir!
   def self.book_dir!
     @jars_dir ||= begin
       path = Pathname.new File.realpath(BOOK_PATH)

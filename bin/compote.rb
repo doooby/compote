@@ -1,15 +1,21 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'pathname'
-LIB_PATH = Pathname.new(Dir.pwd).join(__FILE__ ).join '../../lib'
-require LIB_PATH.join('compote.rb')
-require LIB_PATH.join('compote/cli.rb')
+require_relative '../lib/bin/base'
+require LIB_PATH.join('compote/cli').to_s
 
 Compote.ensure_i_am_root!
 
-command = ARGV.shift
-if command
+Compote.with_gracious_interrupt do
+  command = ARGV.shift
+
+  unless command
+    script_name = Compote.choose_script!
+    jar = Compote::Jar.new script_name
+    Compote::Cli::Helpers.choose_script_command jar
+    next
+  end
+
   Compote::CommandRunner.new(command).parse! do |parser|
     parser.banner = 'usage:  compote command [opts]'
     parser.on('-h', 'Prints cli help') do
@@ -36,8 +42,4 @@ if command
       puts LIB_PATH.join('..')
     end
   end
-else
-  script_name = Compote.choose_script!
-  jar = Compote::Jar.new script_name
-  Compote::Cli::Helpers.choose_script_command jar
 end
