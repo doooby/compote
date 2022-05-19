@@ -1,73 +1,43 @@
-# compote v2
-rewrite to ruby. work in progress.
+# Compote
+Docker-based tool to run services.
 
-## warning
-this tool requires sudo access for all operations. Take it or leave it.
+The **aim** of this is not to apply the best standards or be super performant but rather a **simple** solution for **git-push deployment** of containers on **own servers**.
 
-## install
-requires ruby 2.7+ installed
+Each service is represented as a **compote jar** - a dedicated directory that holds configuration and git source code, optionally cached libraries, data to be persisted, etc.
+
+## Requirements
+
+##### system
+GNU/Linux, bash. Developed on Ubuntu server 22.04.
+
+##### sudo
+This tool expects that you access the server as a non-root user with password-less sudo provided.
+
+##### ruby
+System-wide installation required. Developed with 3.0 version.
+
+##### docker & docker compose
+Root access is enough as compote-cli is always called with sudo.
+
+## Install
+
 ```shell
-sudo gem install colorize tty-prompt byebug
+sudo gem install colorize tty-prompt
+# for dev & testing
+sudo gem install byebug colorize tty-prompt
 ```
 
-install:
+download compote:
 ```shell
-compote_dest=/opt/compote
-sudo git clone https://github.com/doooby/compote.git $compote_dest
-cd $compote_dest
+git clone https://github.com/doooby/compote.git /opt/compote
 # optionally switch branch
-sudo git checkout main-v2
-# set up the binary for current user
-bin/install.rb ~/compote/bin/cpt
+(cd /opt/compote && git checkout main-v2)
+# install the entry point for the user
+/opt/compote/bin/user_install.rb ~/.compote/cli
 ```
 
 log off and on again
 ```shell
 # now you can run compote using alias
-cpt ls
+compote ls
 ```
-
-# compote
-docker-compose based stack ops for simple git push deployment of dockerized application
-
-## create stack
-read HOW_TO to familiarize yourself with the process before running the create_stack.sh script.
-
-then:
-```shell script
-version=master
-curl -o /tmp/compote https://raw.githubusercontent.com/doooby/compote/$version/lib/create_stack.sh
-less /tmp/compote # read before execute
-stack=/opt/my-stack
-bash /tmp/compote $stack $version
-```
-
-and follow on more instructions
-(you can `cat $stack/HOW_TO`)
-
-## stack structure
-```
-/stack-dir/
-    stack.conf - stack variables
-    .dockerignore - virtual created on demand
-    .env - symlink to stack.conf
-    .git/ - remotely accessible repository
-    deploy - link to after push script
-    release - compote recipes for building & deploying new release
-            - rename release -> _release to disable that (init state)
-    src/ - git working dir
-    ops/ - compote source files
-    bin/ - symlink to ops/lib/bin
-    var/ - stack data
-    tmp/ - public dir
-```
-
---------------------------------
-do `/usr/local/bin/cpt`
-
-#!/usr/bin/env bash
-set -e
-cd /opt/compote
-exec bin/compote "$@"
-
-chmod +x /usr/local/bin/cpt

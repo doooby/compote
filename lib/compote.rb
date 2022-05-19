@@ -2,9 +2,9 @@
 
 # ENV:
 # PRODUCTION
-# BOOK_PATH
+# RECIPES_BOOK_PATH
 
-require 'byebug' if ENV['DEBUG'] == '1'
+require 'byebug' if ENV['BYEBUG'] == '1'
 
 require 'pathname'
 require 'io/console'
@@ -15,7 +15,6 @@ require 'tty-prompt'
 unless Object.const_defined? 'LIB_PATH'
   LIB_PATH = Pathname.new(Dir.pwd).join(__FILE__ ).join '..'
 end
-BOOK_PATH = ENV.fetch 'BOOK_PATH', LIB_PATH.join('tmp/book')
 
 module Compote
 
@@ -61,9 +60,10 @@ module Compote
   # TODO rename to recipes_book_dir!
   def self.book_dir!
     @jars_dir ||= begin
-      path = Pathname.new File.realpath(BOOK_PATH)
+      path = ENV.fetch 'RECIPES_BOOK_PATH', LIB_PATH.join('tmp/book')
+      path = Pathname.new File.realpath(path)
       unless Dir.exist? path
-        puts "starting a book at path #{path}".green
+        puts "starting a book at path #{path}".yellow
         Compote.run "mkdir -p #{path}"
       end
       path
