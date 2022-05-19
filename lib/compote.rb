@@ -41,6 +41,11 @@ module Compote
     end
   end
 
+  def self.exec system_command
+    puts "#{system_command.gsub '   ', " \\\n  "}".blue
+    Kernel.exec system_command
+  end
+
   def self.choose_jar!
     jars = nil
     Dir.chdir shelf_dir! do
