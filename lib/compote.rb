@@ -2,7 +2,7 @@
 
 # ENV:
 # PRODUCTION
-# RECIPES_BOOK_PATH
+# SHELF_PATH
 
 require 'byebug' if ENV['BYEBUG'] == '1'
 
@@ -41,42 +41,31 @@ module Compote
     end
   end
 
-  # TODO rename to recipes
-  def self.choose_script!
-    scripts = nil
-    Dir.chdir book_dir! do
-      scripts = Dir.glob('*').select{ File.directory? _1 }
+  def self.choose_jar!
+    jars = nil
+    Dir.chdir shelf_dir! do
+      jars = Dir.glob('*').select{ File.directory? _1 }
     end
 
-    if scripts.nil? or scripts.empty?
-      puts 'book is empty'.yellow
+    if jars.empty?
+      puts 'shelf is empty'.yellow
       exit 1
     else
       prompt = TTY::Prompt.new
-      prompt.select 'Choose script', scripts
+      prompt.select 'Choose jar', jars
     end
   end
 
-  # TODO rename to recipes_book_dir!
-  def self.book_dir!
-    @jars_dir ||= begin
-      path = ENV.fetch 'RECIPES_BOOK_PATH', LIB_PATH.join('tmp/book')
+  def self.shelf_dir!
+    @shelf_dir ||= begin
+      path = ENV.fetch 'SHELF_PATH', LIB_PATH.join('tmp/shelf')
       path = Pathname.new File.realpath(path)
       unless Dir.exist? path
-        puts "starting a book at path #{path}".yellow
+        puts "creating new shelf for jars at path #{path}".yellow
         Compote.run "mkdir -p #{path}"
       end
       path
     end
-  end
-
-  def self.script_dir! name
-    jar = Compote.book_dir!.join name
-    unless Dir.exist? jar
-      puts "no script with name #{name} exists".yellow
-      exit 1
-    end
-    jar
   end
 
   def self.ensure_i_am_root!

@@ -10,27 +10,28 @@ Compote.with_gracious_interrupt do
   command = ARGV.shift
 
   unless command
-    script_name = Compote.choose_script!
-    jar = Compote::Jar.new script_name
-    Compote::Cli::Helpers.choose_script_command jar
+    jar = Compote::Jar.new Compote.choose_jar!
+    jar.open_dir!
+    Object.const_set 'Jar', jar
+    jar.script! jar.select_script
     next
   end
 
-  Compote::CommandRunner.new(command).parse! do |parser|
+  Compote::Cli::CommandRunner.new(command).parse! do |parser|
     parser.banner = 'usage:  compote command [opts]'
     parser.on('-h', 'Prints cli help') do
       puts
       puts parser.help
       exit 0
     end
-    parser.on('new', 'Creates new empty script') do
-      Compote::Cli.create_script
+    parser.on('new', 'Creates new empty jar') do
+      Compote::Cli.create_jar
     end
-    parser.on('ls', 'List present scripts') do
-      Compote::Cli.list_scripts
+    parser.on('ls', 'List jars') do
+      Compote::Cli.list_jars
     end
-    parser.on('script', 'Runs a script command') do
-      Compote::Cli.script_command
+    parser.on('script', 'Runs a jar script') do
+      Compote::Cli.jar_script
     end
     parser.on('jar', 'opens a shell on jar container') do
       Compote::Cli.open_jar

@@ -4,8 +4,10 @@ module Compote
   class Jar
     module Docker
 
+      IGNORE_FILE = '.dockerignore'
+
       def image_path image_name
-        "#{JAR_CONFIG_PATH}/images/#{image_name}"
+        "#{JAR_SRC_CONFIG_PATH}/images/#{image_name}"
       end
 
       def image_tag image_name
@@ -75,8 +77,8 @@ rm #{IGNORE_FILE}
 
       def command_compose
         <<-COMMAND.strip
-docker-compose \
-  -f #{JAR_CONFIG_PATH}/docker-compose.yml \
+docker compose \
+  -f #{JAR_SRC_CONFIG_PATH}/docker-compose.yml \
   --env-file .env \
   -p jar_#{@name}
         COMMAND

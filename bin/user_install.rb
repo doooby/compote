@@ -36,3 +36,6 @@ if ! grep "^compote:" /etc/group > /dev/null; then
 fi
 sudo usermod -a -G compote #{user}
 HEREDOC
+
+puts 'done'.green
+puts 'log off and on again.'

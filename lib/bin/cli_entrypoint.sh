@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 exec sudo \
  BYEBUG=0 \
- RECIPES_BOOK_PATH=/var/lib/compote/book \
+ SHELF_PATH=/var/lib/compote/shelf \
  /opt/compote/bin/cli.rb "$@"

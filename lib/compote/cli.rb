@@ -3,20 +3,20 @@
 module Compote
   module Cli
 
-    def self.create_script
+    def self.create_jar
       name = Helpers.shift_parameter!(
-        help: 'pass script name'
+        help: 'pass jar name'
       )
-      script_path = Compote.book_dir!.join name
-      if Dir.exist? script_path
-        puts "script already exists at #{script_path}".yellow
+      jar_path = Compote.shelf_dir!.join name
+      if Dir.exist? jar_path
+        puts 'jar already exists'.yellow
         exit 1
       else
-        Compote.run "mkdir -p #{script_path}"
+        Compote.run "mkdir -p #{jar_path}"
       end
 
       jar = Compote::Jar.new name
-      jar.open_script_dir!
+      jar.open_dir!
 
       # create structure
       Compote.run 'mkdir var'
@@ -24,52 +24,57 @@ module Compote
 
       # create config
       Compote.run 'touch jar.conf'
-      puts "providing defaults to #{'jar.conf'.blue}"
-      File.write 'jar.conf', jar.default_config
-
-      Helpers.prepare_git_src
-
-      # connect config
+      puts 'filling-in defaults'
+      File.write 'jar.conf', [
+        "JAR_NAME=#{jar.name}",
+        "JAR_PATH=#{Dir.pwd}",
+        nil,
+        'RACK_ENV=production',
+        'NODE_ENV=production',
+        nil
+      ].join("\n")
+      # config for docker compose
       Compote.run 'ln -s jar.conf .env'
 
-      path = Pathname.new(Dir.pwd).join '.git'
-      puts "created a script at #{path.to_s.underline}".green
+      jar.prepare_git_src
+      puts "created jar #{jar.name}".green
+      git_path = Pathname.new(Dir.pwd).join('.git').to_s
+      puts "push source code to #{git_path.underline}".green
     end
 
-    def self.list_scripts
-      Compote.run "ls -la #{Compote.book_dir!}"
+    def self.list_jars
+      Compote.run "ls -la #{Compote.shelf_dir!}"
     end
 
-    def self.script_command
+    def self.jar_script
       name = Helpers.shift_parameter!(
+        help: 'pass jar name'
+      )
+      script = Helpers.shift_parameter!(
         help: 'pass script name'
       )
-      command = Helpers.shift_parameter!(
-        help: 'pass command'
-      )
       jar = Compote::Jar.new name
-      jar.open_script_dir!
+      jar.open_dir!
       Object.const_set 'Jar', jar
-      Helpers.command! 'script', command
+      jar.script! script
     end
 
     def self.open_jar
       name = Helpers.shift_parameter!(
-        help: 'pass script name'
+        help: 'pass jar name'
       )
       jar = Compote::Jar.new name
-      jar.open_script_dir!
+      jar.open_dir!
       Compote.run "#{jar.command_compose}   run --rm app bash"
     end
 
     def self.upgrade
       Dir.chdir LIB_PATH.join('..') do
-        Compote.run "git pull"
+        Compote.run 'git pull'
       end
     end
 
     module Helpers
-
       def self.shift_parameter! help: , **_
         arg = ARGV.shift
         if arg.nil? || arg == '-h'
@@ -78,49 +83,6 @@ module Compote
         end
         arg
       end
-
-      def self.prepare_git_src
-        puts 'setting up git repository'
-        Compote.run 'git init -q --bare .git'
-
-        hook_src = LIB_PATH.join 'git_hook/post_receive.sh'
-        hook_path = '.git/hooks/post-receive'
-        File.delete hook_path if File.exist? hook_path
-        Compote.run "cp #{hook_src} .git/hooks/post-receive"
-        Compote.run 'chown root:compote -R .git'
-        Compote.run 'find .git -type d | xargs chmod 0070'
-        Compote.run 'find .git -type f | xargs chmod 060'
-        Compote.run 'chmod 070 .git/hooks/post-receive'
-      end
-
-      def self.command! scope, name
-        dir = "compote/cli/commands/#{scope}"
-        command = LIB_PATH.join dir, "#{name}.rb"
-        if File.exist? command
-          require command
-        else
-          puts 'no such command found'.red
-          commands = nil
-          Dir.chdir LIB_PATH.join(dir) do
-            commands = Dir.glob('*.rb').map{ _1[0..-4] }
-          end
-          puts "commands:  #{commands.join ' '}"
-          exit 1
-        end
-      end
-
-      def self.choose_script_command jar
-        jar.open_script_dir!
-        commands = nil
-        Dir.chdir LIB_PATH.join('compote/cli/commands/script') do
-          commands = Dir.glob('*.rb').map{ _1[0..-4] }
-        end
-        prompt = TTY::Prompt.new
-        command = prompt.select "select command:", commands, filter: true
-        Object.const_set 'Jar', jar
-        command! 'script', command
-      end
-
     end
 
   end

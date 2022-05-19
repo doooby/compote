@@ -29,6 +29,7 @@ sudo gem install byebug colorize tty-prompt
 
 download compote:
 ```shell
+sudo mkdir /opt/compote && sudo chown `whoami` /opt/compote
 git clone https://github.com/doooby/compote.git /opt/compote
 # optionally switch branch
 (cd /opt/compote && git checkout main-v2)
