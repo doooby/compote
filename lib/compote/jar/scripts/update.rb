@@ -1,2 +1,2 @@
-Jar.checkout_source!
+Jar.checkout_source
 puts "script updated".green

@@ -2,7 +2,7 @@
 
 module Compote
   class Jar
-    module Dir
+    module Directory
 
       def open_dir!
         jar = Compote.shelf_dir!.join @name
@@ -15,7 +15,7 @@ module Compote
         jar
       end
 
-      def checkout_source!
+      def checkout_source
         unless Dir.exist? 'src'
           Compote.run 'git clone --single-branch --branch main .git src'
         end
