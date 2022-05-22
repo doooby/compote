@@ -12,7 +12,7 @@ module Compote
         @commands.push [
           '-h',
           'Prints help',
-          -> { puts help }
+          ->(_) { puts help }
         ]
       end
 
