@@ -8,7 +8,6 @@ module Compote
     JAR_SRC_CONFIG_PATH = 'src/.compote'
 
     include Directory
-    include Scripts
     include Docker
 
     attr_reader :name
