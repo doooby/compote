@@ -38,7 +38,7 @@ module Compote
 
       def help
         longest_command, _ = commands.max{ _1.length }
-        spacer = ' ' * (longest_command + 2)
+        spacer = ' ' * (longest_command.length + 2)
         [
           "\n",
           banner,
