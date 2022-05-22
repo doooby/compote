@@ -37,7 +37,7 @@ module Compote
       end
 
       def help
-        longest_command, _ = commands.max{ _1.length }
+        longest_command, *_ = commands.max_by{ _1[0].length }
         [
           "\n",
           banner,
