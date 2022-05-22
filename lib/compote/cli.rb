@@ -51,11 +51,8 @@ module Compote
     add_command 'path', 'prints path of the jar' do |args|
       Compote.mute!
       name = Jar.shift_jar_name args
-      jar = Jar.get_jar name
-      if jar
-        jar.open_dir!
-        puts Dir.pwd
-      end
+      Jar.with_jar! name
+      puts Dir.pwd
     end
 
     add_command 'irb', 'opens irb console with this library' do
