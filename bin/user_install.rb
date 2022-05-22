@@ -3,7 +3,7 @@
 
 require_relative '../lib/bin/base'
 
-destination = '/opt/compote_runner'
+destination = '~/compote_runner'
 Compote.run "cp #{LIB_PATH.join 'bin/cli_runner.sh'} #{destination}"
 Compote.run "chmod u+x #{destination}"
 
