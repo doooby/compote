@@ -19,7 +19,7 @@ module Compote
         log :red, 'jar already exists'
         exit 1
       else
-        Compote.run "mkdir -p #{jar_path}"
+        Compote.run "mkdir -p #{Compote.shelf_dir!.join name}"
       end
       jar = Jar.get_jar name
       jar.prepare
