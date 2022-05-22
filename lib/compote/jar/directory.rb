@@ -15,6 +15,33 @@ module Compote
         jar
       end
 
+      def prepare
+        open_dir!
+
+        # create structure
+        Compote.run 'mkdir var'
+        Compote.run 'mkdir tmp'
+        Compote.run 'chown root:compote tmp'
+        Compote.run 'chmod +t tmp'
+
+        # create config
+        Compote.run 'touch jar.conf'
+        Compote.log :yellow, 'filling-in defaults'
+        File.write 'jar.conf', [
+          "JAR_NAME=#{name}",
+          "JAR_PATH=#{Dir.pwd}",
+          nil,
+          'RACK_ENV=production',
+          'NODE_ENV=production',
+          nil
+        ].join("\n")
+        # config for docker compose
+        Compote.run 'ln -s jar.conf .env'
+
+        prepare_git_src
+        Compote.log :green, "created jar #{name}"
+      end
+
       def checkout_source
         unless Dir.exist? 'src'
           Compote.run 'git clone --single-branch --branch main .git src'

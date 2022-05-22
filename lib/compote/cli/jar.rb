@@ -43,6 +43,10 @@ module Compote
         Compote.log :green, 'base images built'
       end
 
+      add_command 'edit_conf', 'Opens jar.conf in nano' do
+        Compote.exec 'nano jar.conf'
+      end
+
       add_command 'compose', 'runs docker compose with arguments' do |args|
         jar.serve args.join(' ')
       end
