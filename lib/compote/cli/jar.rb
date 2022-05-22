@@ -29,43 +29,37 @@ module Compote
 
       class << self
         include CommandRunner::Commandable
+        attr_accessor :jar
       end
 
       command_runner.banner = 'usage:  compote jar NAME COMMAND [OPTS]'
 
       add_command 'update', 'Updates jar git source' do
-        jar = with_jar! name
         jar.checkout_source
       end
 
       add_command 'make_base', 'Crates the base docker images' do
-        jar = with_jar! name
         jar.build_base
         Compote.log :green, 'base images built'
       end
 
       add_command 'serve', 'runs docker compose with arguments' do |args|
-        jar = with_jar! name
         jar.serve args
       end
 
       add_command 'up', 'Starts all the containers' do
-        jar = with_jar! name
         jar.serve 'up -d'
       end
 
       add_command 'down', 'Stops all the containers' do
-        jar = with_jar! name
         jar.serve 'down'
       end
 
       add_command 'bash', 'Runs bash on a temporary container' do
-        jar = with_jar! name
         jar.serve 'run --rm app bash'
       end
 
       add_command 'brew', 'Brews the compote, aka. release' do
-        with_jar! name
         require_relative "#{Compote::Jar::JAR_SRC_CONFIG_PATH}/compote.rb"
         Compote.log :green, 'the compote has been brewed'
       end
@@ -83,7 +77,6 @@ module Compote
       end
 
       add_command 'irb', 'Opens ruby console at the jar path' do
-        with_jar! name
         require 'irb'
         binding.irb
       end

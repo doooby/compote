@@ -13,7 +13,9 @@ module Compote
     command_runner.banner = 'usage:  compote COMMAND [OPTS]'
 
     add_command 'jar', 'jar specific commands' do |args|
-      Compote::Cli::Jar.command_runner.run! args.shift, args
+      name = Jar.shift_jar_name args
+      Jar.jar = Jar.with_jar! name
+      Jar.command_runner.run! args.shift, args
     end
 
     add_command 'new', 'creates new empty jar' do |args|
