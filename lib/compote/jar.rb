@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative './jar/directory'
-require_relative './jar/scripts'
 require_relative './jar/docker'
 
 module Compote

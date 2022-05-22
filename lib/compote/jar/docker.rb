@@ -16,8 +16,8 @@ module Compote
 
       def clear_for_build!
         if File.exist? IGNORE_FILE
-          puts "#{IGNORE_FILE} is present.".yellow
-          puts 'either another build is in progress' +
+          Compote.log :red, "#{IGNORE_FILE} is present."
+          Compote.log :white, 'either another build is in progress' +
             ' or the previous one failed.'
           exit 1
         end

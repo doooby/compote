@@ -7,10 +7,10 @@ module Compote
       def open_dir!
         jar = Compote.shelf_dir!.join @name
         unless Dir.exist? jar
-          puts "jar #{@name} doesn't exist".yellow
+          Compote.log :yellow, "jar #{@name} doesn't exist"
           exit 1
         end
-        puts "cd #{jar}".blue
+        Compote.log :blue, "cd #{jar}"
         Dir.chdir jar
         jar
       end
@@ -30,7 +30,7 @@ COMMAND
       end
 
       def prepare_git_src
-        puts 'setting up git repository'
+        Compote.log :yellow, 'setting up git repository'
         Compote.run 'git init -q --bare .git'
 
         hook_src = LIB_PATH.join 'git_hooks/post_receive.sh'
