@@ -43,8 +43,8 @@ module Compote
         Compote.log :green, 'base images built'
       end
 
-      add_command 'serve', 'runs docker compose with arguments' do |args|
-        jar.serve args
+      add_command 'compose', 'runs docker compose with arguments' do |args|
+        jar.serve args.join(' ')
       end
 
       add_command 'up', 'Starts all the containers' do
