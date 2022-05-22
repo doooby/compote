@@ -5,7 +5,7 @@ module Compote
     module Jar
 
       def self.shift_jar_name args
-        CommandRunner.shift_parameter! args, 'pass new jar name'
+        CommandRunner.shift_parameter! args, 'pass new name'
       end
 
       def self.get_jar name

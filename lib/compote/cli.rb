@@ -44,6 +44,7 @@ module Compote
         exit 1
       end
       Dir.chdir '..'
+      puts Dir.pwd
       Compote.run "rm -rf #{jar.name}"
     end
 
