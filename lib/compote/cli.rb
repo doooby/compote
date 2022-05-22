@@ -3,7 +3,7 @@
 module Compote
   module Cli
 
-    require_relative 'cli/commands_runner'
+    require_relative 'cli/command_runner'
     require_relative 'cli/jar'
 
     class << self
