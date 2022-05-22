@@ -64,7 +64,7 @@ module Compote
       end
 
       add_command 'brew', 'Brews the compote, aka. release' do
-        require_relative "#{Compote::Jar::JAR_SRC_CONFIG_PATH}/compote.rb"
+        require_relative "#{Compote::Jar::JAR_SRC_CONFIG_PATH}/recipe.rb"
         Compote.log :green, 'the compote has been brewed'
       end
 
