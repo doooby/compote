@@ -64,6 +64,7 @@ module Compote
       end
 
       add_command 'brew', 'Brews the compote, aka. release' do
+        jar.checkout_source
         Object.const_set 'JAR', jar
         require "#{Dir.pwd}/#{Compote::Jar::JAR_SRC_CONFIG_PATH}/recipe.rb"
         Compote.log :green, 'the compote has been brewed'
