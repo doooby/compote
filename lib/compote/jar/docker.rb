@@ -30,10 +30,9 @@ module Compote
 docker build \
   -f #{dockerfile_path} \
   -t #{image_tag 'base'} \
-  . \
-; \
-rm #{IGNORE_FILE}
+  .
         COMMAND
+        Compote.run "rm #{IGNORE_FILE}"
       end
 
       def stack image, options, command
@@ -55,10 +54,9 @@ docker build \
   -f #{dockerfile_path} \
   -t #{image_tag image} \
   --build-arg BASE_IMAGE=#{image_tag 'base'} \
-  . \
-; \
-rm #{IGNORE_FILE}
+  .
         COMMAND
+        Compote.run "rm #{IGNORE_FILE}"
       end
 
       def serve args
