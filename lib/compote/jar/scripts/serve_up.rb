@@ -1,2 +1,2 @@
-Jar.serve 'up -d'
+JAR.serve 'up -d'
 puts "script updated".green

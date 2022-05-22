@@ -39,8 +39,5 @@ Compote.with_gracious_interrupt do
     parser.on('upgrade', 'updates this library') do
       Compote::Cli.upgrade
     end
-    parser.on('path', 'prints source path') do
-      puts LIB_PATH.join('..')
-    end
   end
 end

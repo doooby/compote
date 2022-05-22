@@ -1,2 +1,2 @@
-Jar.checkout_source
+JAR.checkout_source
 puts "script updated".green

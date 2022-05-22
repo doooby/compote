@@ -1,2 +1,2 @@
-Jar.build_base
+JAR.build_base
 puts "Base ready".green

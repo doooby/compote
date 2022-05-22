@@ -6,7 +6,7 @@ require_relative './jar/docker'
 
 module Compote
   class Jar
-    JAR_SRC_CONFIG_PATH = 'src/.jar'
+    JAR_SRC_CONFIG_PATH = 'src/.compote'
 
     include Directory
     include Scripts
