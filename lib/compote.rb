@@ -4,8 +4,6 @@
 # PRODUCTION
 # SHELF_PATH
 
-require 'byebug' if ENV['BYEBUG'] == '1'
-
 require 'pathname'
 require 'io/console'
 require 'pty'

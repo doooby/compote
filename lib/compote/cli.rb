@@ -56,6 +56,11 @@ module Compote
       end
     end
 
+    add_command 'irb', 'opens irb console with this library' do
+      require 'irb'
+      binding.irb
+    end
+
     add_command 'upgrade', 'updates this library' do
       Dir.chdir LIB_PATH.join('..') do
         user = `stat --format '%U' .`.strip

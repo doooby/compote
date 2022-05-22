@@ -14,18 +14,15 @@ GNU/Linux, bash. Developed on Ubuntu server 22.04.
 This tool expects that you access the server as a non-root user with password-less sudo provided.
 
 ##### ruby
-System-wide installation required. Developed with 3.0 version.
+System-wide installation with the following gems required. Developed with 3.0 version.
+```shell
+sudo gem install colorize tty-prompt
+```
 
 ##### docker & docker compose
 Root access is enough as compote-cli is always called with sudo.
 
 ## Install
-
-```shell
-sudo gem install colorize tty-prompt
-# for dev & testing
-sudo gem install byebug colorize tty-prompt
-```
 
 download compote:
 ```shell
