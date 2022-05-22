@@ -38,14 +38,14 @@ module Compote
 
       def help
         longest_command, _ = commands.max{ _1.length }
-        spacer = ' ' * (longest_command.length + 2)
         [
           "\n",
           banner,
           'commands:',
           *commands.map{
             name, caption, _ = _1
-            "#{name}#{spacer}#{caption}"
+            spaces = longest_command.length + 2 - name.length
+            "#{name}#{' ' * spaces}#{caption}"
           },
         ].compact
       end
