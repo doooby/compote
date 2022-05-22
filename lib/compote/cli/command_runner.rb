@@ -4,54 +4,69 @@ module Compote
   module Cli
     class CommandRunner
 
-      def initialize command
-        @command = command
+      attr_accessor :banner
+      attr_accessor :commands
+
+      def initialize
+        @commands = []
+        @commands.push [
+          '-h',
+          'Prints help',
+          -> { puts help }
+        ]
       end
 
-      def parse!
-        parser = Parser.new
-        yield parser
-        command = parser.find_command @command
-        unless command
-          puts "unknown command #{@command}".yellow
-          puts
-          puts parser.help
+      def run! command, arguments
+        command = find_command command
+        if command
+          command.call arguments
+        else
+          puts "unknown command #{command}".yellow
+          puts help
           exit 1
         end
-        command.call
       end
 
-      class Parser
-        attr_accessor :banner
-        attr_reader :commands
+      def find_command name_to_find
+        command = commands.find do |name, _, _|
+          name_to_find == name
+        end
+        return nil unless command
+        _, _, block = command
+        block
+      end
 
-        def initialize
-          @commands = []
+      def help
+        [
+          "\n",
+          banner,
+          'commands:',
+          *commands.map{
+            name, caption, _ = _1
+            "#{name}\t#{caption}"
+          },
+        ].compact
+      end
+
+      def self.shift_parameter! arguments, help
+        arg = arguments.shift
+        if arg.nil? || arg == '-h'
+          puts help
+          exit arg.nil? ? 1 : 0
+        end
+        arg
+      end
+
+      module Commandable
+
+        def command_runner
+          @command_runner ||= CommandRunner.new
         end
 
-        def on name, caption, &block
-          commands.push [ name, caption, block ]
+        def add_command command, caption, &block
+          command_runner.commands.push [ command, caption, block ]
         end
 
-        def find_command name_to_find
-          command = commands.find do |name, _, _|
-            name_to_find == name
-          end
-          return nil unless command
-          _, _, block = command
-          block
-        end
-
-        def help
-          puts [
-            banner,
-            'commands:',
-            *commands.map{
-              name, caption, _ = _1
-              "#{name}\t#{caption}"
-            },
-          ].compact
-        end
       end
 
     end

@@ -18,14 +18,16 @@ end
 
 module Compote
 
+  require_relative 'compote/jar'
+
   def self.with_gracious_interrupt
     yield
   rescue Interrupt
-    puts "compote interrupted".red
+    log :red, "compote interrupted"
   end
 
   def self.run system_command
-    puts "#{system_command.gsub '   ', " \\\n  "}".blue
+    log :blue, "#{system_command.gsub '   ', " \\\n  "}"
 
     command_out, _, pid = PTY.spawn system_command
     loop do
@@ -36,14 +38,22 @@ module Compote
 
     status = Process::Status.wait pid
     unless status.exitstatus.zero?
-      puts "spawned process exited with #{status.exitstatus}".red
+      log :red, "spawned process exited with #{status.exitstatus}"
       exit status.exitstatus
     end
   end
 
   def self.exec system_command
-    puts "#{system_command.gsub '   ', " \\\n  "}".blue
+    log :blue, "#{system_command.gsub '   ', " \\\n  "}"
     Kernel.exec system_command
+  end
+
+  def mute!
+    @mute = true
+  end
+
+  def log color, text
+    puts text.send(color) unless @mute
   end
 
   def self.choose_jar!
@@ -53,7 +63,7 @@ module Compote
     end
 
     if jars.empty?
-      puts 'shelf is empty'.yellow
+      log :red, 'shelf is empty'
       exit 1
     else
       prompt = TTY::Prompt.new
@@ -65,7 +75,7 @@ module Compote
     @shelf_dir ||= begin
       path = ENV.fetch 'SHELF_PATH', LIB_PATH.join('tmp/shelf')
       unless Dir.exist? path
-        puts 'creating new shelf for compote jars'.yellow
+        log :yellow, 'creating new shelf for compote jars'
         Compote.run "mkdir -p #{path}"
       end
       Pathname.new path
@@ -74,11 +84,9 @@ module Compote
 
   def self.ensure_i_am_root!
     unless (%x[whoami]).strip == 'root'
-      puts "needs to be run as root".yellow
+      log :red, "needs to be run as root"
       exit 1
     end
   end
 
 end
-
-require_relative 'compote/jar'

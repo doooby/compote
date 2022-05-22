@@ -62,7 +62,7 @@ rm #{IGNORE_FILE}
       end
 
       def serve args
-        Compote.run "#{command_compose}   #{args}"
+        Compote.exec "#{command_compose}   #{args}"
       end
 
       def prepare_for_build image_name

@@ -3,90 +3,66 @@
 module Compote
   module Cli
 
-    def self.create_jar
-      name = Helpers.shift_parameter!(
-        help: 'pass jar name'
-      )
-      jar_path = Compote.shelf_dir!.join name
-      if Dir.exist? jar_path
-        puts 'jar already exists'.yellow
+    require_relative 'cli/commands_runner'
+    require_relative 'cli/jar'
+
+    class << self
+      include CommandRunner::Commandable
+    end
+
+    command_runner.banner = 'usage:  compote command [opts]'
+
+    add_command 'new', 'Creates new empty jar' do |args|
+      name = Jar.shift_jar_name args
+      jar = Jar.get_jar name
+      if jar
+        log :red, 'jar already exists'
         exit 1
       else
         Compote.run "mkdir -p #{jar_path}"
       end
-
-      jar = Compote::Jar.new name
-      jar.open_dir!
-
-      # create structure
-      Compote.run 'mkdir var'
-      Compote.run 'mkdir tmp'
-
-      # create config
-      Compote.run 'touch jar.conf'
-      puts 'filling-in defaults'
-      File.write 'jar.conf', [
-        "JAR_NAME=#{jar.name}",
-        "JAR_PATH=#{Dir.pwd}",
-        nil,
-        'RACK_ENV=production',
-        'NODE_ENV=production',
-        nil
-      ].join("\n")
-      # config for docker compose
-      Compote.run 'ln -s jar.conf .env'
-
-      jar.prepare_git_src
-      puts "created jar #{jar.name}".green
+      jar = Jar.get_jar name
+      jar.prepare
       git_path = Pathname.new(Dir.pwd).join('.git').to_s
-      puts "push source code to #{git_path.underline}".green
+      log :green, "push source code to #{git_path.underline}"
     end
 
-    def self.list_jars
+    add_command 'ls', 'List jars' do
       Compote.run "ls -la #{Compote.shelf_dir!}"
     end
 
-    def self.jar_script
-      name = Helpers.shift_parameter!(
-        help: 'pass jar name'
-      )
-      script = Helpers.shift_parameter!(
-        help: 'pass script name'
-      )
-      jar = Compote::Jar.new name
-      jar.open_dir!
-      Object.const_set 'Jar', jar
-      jar.script! script
+    add_command 'remove', 'Destroys the jar and clears the dir' do |args|
+      name = Jar.shift_jar_name args
+      jar = Jar.get_jar name
+      unless jar
+        log :red, 'jar doesn\'t exsist exists'
+        exit 1
+      end
+      log :yellow, 'WARNING: stop & clear containers manually before continuing'
+      prompt = TTY::Prompt.new
+      unless prompt.yes? "are you sure to irreversibly remove jar #{jar.name} ?"
+        exit 1
+      end
+      Dir.chdir '..'
+      Compote.run "rm -rf #{jar.name}"
     end
 
-    def self.open_jar
-      name = Helpers.shift_parameter!(
-        help: 'pass jar name'
-      )
-      jar = Compote::Jar.new name
-      jar.open_dir!
-      Compote.exec "#{jar.command_compose}   run --rm app bash"
+    add_command 'path', 'prints path of the jar' do |args|
+      Compote.mute!
+      name = Jar.shift_jar_name args
+      jar = Jar.get_jar name
+      if jar
+        jar.open_dir!
+        puts Dir.pwd
+      end
     end
 
-    def self.upgrade
+    add_command 'upgrade', 'Updates this library' do
       Dir.chdir LIB_PATH.join('..') do
         user = `stat --format '%U' .`.strip
         Compote.run "su -c 'git pull' #{user}"
       end
     end
 
-    module Helpers
-      def self.shift_parameter! help: , **_
-        arg = ARGV.shift
-        if arg.nil? || arg == '-h'
-          puts help
-          exit arg.nil? ? 1 : 0
-        end
-        arg
-      end
-    end
-
   end
 end
-
-require_relative 'cli/command_runner'
