@@ -48,11 +48,11 @@ module Compote
     Kernel.exec system_command
   end
 
-  def mute!
+  def self.mute!
     @mute = true
   end
 
-  def log color, text
+  def self.log color, text
     puts text.send(color) unless @mute
   end
 
