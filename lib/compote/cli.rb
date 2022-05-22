@@ -16,7 +16,7 @@ module Compote
       name = Jar.shift_jar_name args
       jar = Jar.get_jar name
       if jar
-        log :red, 'jar already exists'
+        Compote.log :red, 'jar already exists'
         exit 1
       else
         Compote.run "mkdir -p #{Compote.shelf_dir!.join name}"
@@ -24,7 +24,7 @@ module Compote
       jar = Jar.get_jar name
       jar.prepare
       git_path = Pathname.new(Dir.pwd).join('.git').to_s
-      log :green, "push source code to #{git_path.underline}"
+      Compote.log :green, "push source code to #{git_path.underline}"
     end
 
     add_command 'ls', 'List jars' do
@@ -35,10 +35,10 @@ module Compote
       name = Jar.shift_jar_name args
       jar = Jar.get_jar name
       unless jar
-        log :red, 'jar doesn\'t exsist exists'
+        Compote.log :red, 'jar doesn\'t exsist exists'
         exit 1
       end
-      log :yellow, 'WARNING: stop & clear containers manually before continuing'
+      Compote.log :yellow, 'WARNING: stop & clear containers manually before continuing'
       prompt = TTY::Prompt.new
       unless prompt.yes? "are you sure to irreversibly remove jar #{jar.name} ?"
         exit 1
