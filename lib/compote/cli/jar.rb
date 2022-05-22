@@ -43,24 +43,24 @@ module Compote
         Compote.log :green, 'base images built'
       end
 
-      add_command 'edit_conf', 'Opens jar.conf in nano' do
+      add_command 'conf', 'Opens jar.conf in nano' do
         Compote.exec 'nano jar.conf'
       end
 
-      add_command 'compose', 'runs docker compose with arguments' do |args|
-        jar.serve args.join(' ')
-      end
-
       add_command 'up', 'Starts all the containers' do
-        jar.serve 'up -d'
+        jar.compose 'up -d'
       end
 
       add_command 'down', 'Stops all the containers' do
-        jar.serve 'down'
+        jar.compose 'down'
+      end
+
+      add_command 'compose', 'runs docker compose with arguments' do |args|
+        Compote.exec "#{jar.command_compose}   #{args.join ' '}"
       end
 
       add_command 'bash', 'Runs bash on a temporary container' do
-        jar.serve 'run --rm app bash'
+        Compote.exec "#{jar.command_compose}   run --rm app bash"
       end
 
       add_command 'brew', 'Brews the compote, aka. release' do

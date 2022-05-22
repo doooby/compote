@@ -59,8 +59,8 @@ docker build \
         Compote.run "rm #{IGNORE_FILE}"
       end
 
-      def serve args
-        Compote.exec "#{command_compose}   #{args}"
+      def compose args
+        Compote.run "#{command_compose}   #{args}"
       end
 
       def prepare_for_build image_name
