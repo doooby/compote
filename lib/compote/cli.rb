@@ -10,9 +10,13 @@ module Compote
       include CommandRunner::Commandable
     end
 
-    command_runner.banner = 'usage:  compote command [opts]'
+    command_runner.banner = 'usage:  compote COMMAND [OPTS]'
 
-    add_command 'new', 'Creates new empty jar' do |args|
+    add_command 'jar', 'jar specific commands' do |args|
+      Compote::Cli::Jar.command_runner.run! args.shift, args
+    end
+
+    add_command 'new', 'creates new empty jar' do |args|
       name = Jar.shift_jar_name args
       jar = Jar.get_jar name
       if jar
@@ -27,11 +31,11 @@ module Compote
       Compote.log :green, "push source code to #{git_path.underline}"
     end
 
-    add_command 'ls', 'List jars' do
+    add_command 'ls', 'list jars' do
       Compote.run "ls -la #{Compote.shelf_dir!}"
     end
 
-    add_command 'remove', 'Destroys the jar and clears the dir' do |args|
+    add_command 'remove', 'destroys the jar and clears the dir' do |args|
       name = Jar.shift_jar_name args
       jar = Jar.with_jar! name
       Compote.log :yellow, 'WARNING: stop & clear containers manually before continuing'
@@ -52,7 +56,7 @@ module Compote
       end
     end
 
-    add_command 'upgrade', 'Updates this library' do
+    add_command 'upgrade', 'updates this library' do
       Dir.chdir LIB_PATH.join('..') do
         user = `stat --format '%U' .`.strip
         Compote.run "su -c 'git pull' #{user}"

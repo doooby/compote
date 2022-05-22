@@ -31,7 +31,7 @@ module Compote
         include CommandRunner::Commandable
       end
 
-      command_runner.banner = 'usage:  compote jar command [opts]'
+      command_runner.banner = 'usage:  compote jar NAME COMMAND [OPTS]'
 
       add_command 'update', 'Updates jar git source' do
         jar = with_jar! name
