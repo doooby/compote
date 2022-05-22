@@ -50,8 +50,8 @@ module Compote
     @mute = true
   end
 
-  def self.log color, text
-    puts text.send(color) unless @mute
+  def self.log colorize, text
+    puts text.send(colorize) unless @mute
   end
 
   def self.choose_jar!
