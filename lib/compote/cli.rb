@@ -33,19 +33,13 @@ module Compote
 
     add_command 'remove', 'Destroys the jar and clears the dir' do |args|
       name = Jar.shift_jar_name args
-      jar = Jar.get_jar name
-      unless jar
-        Compote.log :red, 'jar doesn\'t exsist exists'
-        exit 1
-      end
+      jar = Jar.with_jar! name
       Compote.log :yellow, 'WARNING: stop & clear containers manually before continuing'
       prompt = TTY::Prompt.new
       unless prompt.yes? "are you sure to irreversibly remove jar #{jar.name} ?"
         exit 1
       end
-      Dir.chdir '..'
-      puts Dir.pwd
-      Compote.run "rm -rf #{jar.name}"
+      Compote.run "rm -rf #{Compote.shelf_dir!.join jar.name}"
     end
 
     add_command 'path', 'prints path of the jar' do |args|
