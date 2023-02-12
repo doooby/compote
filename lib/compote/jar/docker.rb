@@ -78,7 +78,7 @@ docker build \
 docker compose \
   -f #{JAR_SRC_CONFIG_PATH}/docker-compose.yml \
   --env-file .env \
-  -p jar_#{@name}
+  -p jar_#{@name} \
         COMMAND
       end
 

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+# TODO move this to dev somewhere
+
 differs="$( git diff --exit-code --quiet; echo $?; true )"
 if [ "$differs" != "0" ]; then
     echo "commit changes first"

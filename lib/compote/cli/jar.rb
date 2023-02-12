@@ -56,11 +56,11 @@ module Compote
       end
 
       add_command 'compose', 'runs docker compose with arguments' do |args|
-        Compote.exec "#{jar.command_compose}   #{args.join ' '}"
+        Compote.exec "#{jar.command_compose} #{args.join ' '}"
       end
 
       add_command 'bash', 'Runs bash on a temporary container' do
-        Compote.exec "#{jar.command_compose}   run --rm app bash"
+        Compote.exec "#{jar.command_compose} run --rm app bash"
       end
 
       add_command 'brew', 'Brews the compote, aka. release' do
