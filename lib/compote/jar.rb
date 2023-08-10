@@ -2,6 +2,7 @@
 
 require_relative './jar/directory'
 require_relative './jar/docker'
+require_relative './jar/git'
 
 module Compote
   class Jar
