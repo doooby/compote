@@ -2,46 +2,56 @@
 
 module Compote
   class Jar
-    module Directory
+
+    def path
+        @path ||= Compote.shelf_dir!.join(@name)
+    end
+
+    def exists?
+        Dir.exist? path
+    end
 
       def open_dir!
-        jar = Compote.shelf_dir!.join @name
-        unless Dir.exist? jar
+        unless exists?
           Compote.log :yellow, "jar #{@name} doesn't exist"
           exit 1
         end
-        Compote.log :blue, "cd #{jar}"
-        Dir.chdir jar
-        jar
+        Compote.log :blue, "cd #{path}"
+        Dir.chdir path
+        path
       end
 
-      def prepare
-        open_dir!
+  def initialize_jar!
+    open_dir!
 
-        # create structure
-        Compote.run 'mkdir var'
-        Compote.run 'mkdir tmp'
-        Compote.run 'chown root:compote tmp'
-        Compote.run 'chmod +t tmp'
+    # create structure
+    Compote.run <<-CMD.strip
+sudo bash -c "\\
+    mkdir var && \\
+    mkdir tmp && \\
+    chown root:compote tmp && \\
+    chmod +t tmp
+"
+    CMD
 
-        # create config
-        Compote.run 'touch jar.conf'
-        Compote.log :yellow, 'filling-in defaults'
-        File.write 'jar.conf', [
-          "JAR_NAME=#{name}",
-          "JAR_PATH=#{Dir.pwd}",
-          nil,
-          'RACK_ENV=production',
-          'NODE_ENV=production',
-          nil
-        ].join("\n")
-        # config for docker compose
-        Compote.run 'ln -s jar.conf .env'
+    # create config
+    Compote.run 'sudo touch jar.conf'
+    Compote.log :yellow, 'filling-in defaults'
+    system 'sudo chmod a+w jar.conf'
+    File.write 'jar.conf', [
+      "JAR_NAME=#{name}",
+      "JAR_PATH=#{Dir.pwd}",
+      nil,
+      'RACK_ENV=production',
+      'NODE_ENV=production',
+      nil
+    ].join("\n")
+    system 'sudo chmod a-w jar.conf'
+    Compote.run 'sudo ln -s jar.conf .env' # config for docker compose
 
-        prepare_git_src
-        Compote.log :green, "created jar #{name}"
-      end
+    initialize_repo!
+    Compote.log :green, "created jar #{name}"
+  end
 
-    end
   end
 end

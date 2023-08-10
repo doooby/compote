@@ -11,10 +11,10 @@ module Compote
     @jar_commands.banner = 'usage:  compote jar NAME CMD [OPTS]'
 
     def @jar_commands.run! cmd, args
-        if cmd == '-h'
-          super cmd, args
+        if cmd == '-h' || cmd.nil?
+          super '-h', args
         else
-          name = shift_jar_name [cmd]
+          name = Cli.shift_jar_name! [cmd]
           @jar = Jar[name]
           super args.shift, args
         end

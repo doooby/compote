@@ -12,18 +12,8 @@ module Compote
        value
      end
 
-      def self.shift_jar_name args
+      def self.shift_jar_name! args
         shift_param! args, 'jar name missing'
-      end
-
-      def self.get_jar name
-        raise 'niy'
-#         jar_path = Compote.shelf_dir!.join name
-#         if Dir.exist? jar_path
-#           Compote::Jar.new name
-#         else
-#           nil
-#         end
       end
 
       def self.with_jar! name
@@ -87,8 +77,8 @@ module Compote
 
     end
 
-    require_relative 'cli/commands'
-    require_relative 'cli/jar_commands'
-
   end
 end
+
+require_relative 'cli/commands'
+require_relative 'cli/jar_commands'

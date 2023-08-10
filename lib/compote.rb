@@ -17,7 +17,7 @@ module Compote
   end
 
   def self.run cmd
-    log :blue, "#{cmd.gsub '   ', " \\\n  "}"
+    log :blue, cmd
 
     command_out, _, pid = PTY.spawn cmd
     begin
@@ -57,15 +57,22 @@ module Compote
 #     end
 #   end
 
-#   def self.shelf_dir!
-#     @shelf_dir ||= begin
-#       path = ENV.fetch 'SHELF_PATH', LIB_PATH.join('tmp/shelf')
-#       unless Dir.exist? path
-#         log :yellow, 'creating new shelf for compote jars'
-#         Compote.run "mkdir -p #{path}"
-#       end
-#       Pathname.new path
-#     end
-#   end
+  def self.shelf_dir!
+    @shelf_dir ||= begin
+      path = '/var/compote_shelf'
+      unless Dir.exist? path
+        Compote.run <<-CMD.strip
+shelf_path=#{path} && \\
+sudo mkdir -p $shelf_path && \\
+sudo chown root:compote $shelf_path && \\
+sudo chmod 750 $shelf_path
+        CMD
+        log :yellow, 'created shelf for compote jars'
+      end
+      Pathname.new path
+    end
+  end
 
 end
+
+require_relative 'compote/jar'

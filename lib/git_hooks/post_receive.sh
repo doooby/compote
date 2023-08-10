@@ -2,10 +2,10 @@
 set -e
 while read oldrev newrev refname
 do
-  jar=$(basename $(realpath ..))
   if [ -f ../.brew_on_push ]; then
-    ~/compote_cli jar $jar brew
+    jar_name=$(basename $(realpath ..))
+    compote jar $jar_name brew
   else
-    echo -e "\033[33m.brew_on_push is not present\033[0m"
+    echo -e "\033[33m.brew_on_push is not present, skipping jar brew\033[0m"
   fi
 done
