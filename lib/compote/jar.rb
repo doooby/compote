@@ -10,6 +10,15 @@ module Compote
       @name = name
     end
 
+    def self.[] name
+       jar = new name
+       unless jar.exists?
+         Compote.log :red, 'jar doesn\'t exist'
+         exit 1
+       end
+       jar
+    end
+
   end
 end
 

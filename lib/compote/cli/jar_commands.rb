@@ -5,6 +5,7 @@ module Compote
 
     class << self
       attr_reader :jar_commands
+      attr_accessor :jar
     end
     
     @jar_commands = Commands.new
@@ -15,23 +16,29 @@ module Compote
           super '-h', args
         else
           name = Cli.shift_jar_name! [cmd]
-          @jar = Jar[name]
+          Cli.jar = Jar[name]
           super args.shift, args
         end
     end
 
       @jar_commands.add 'update', 'Updates jar git source' do
-#         jar.checkout_source
+        @jar.open_dir!
+        @jar.checkout_source!
       end
-#
+
 #       @jar_commands.add 'make_base', 'Crates the base docker images' do
 #         jar.build_base
 #         Compote.log :green, 'base images built'
 #       end
 #
-#       @jar_commands.add 'conf', 'Opens jar.conf in nano' do
-#         Compote.exec 'nano jar.conf'
-#       end
+      @jar_commands.add 'path', 'prints path in the shelf' do
+        puts @jar.path.to_path
+      end
+
+      @jar_commands.add 'conf', 'Opens jar.conf in nano' do
+        @jar.open_dir!
+        exec 'sudo nano jar.conf'
+      end
 #
 #       @jar_commands.add 'up', 'Starts all the containers' do
 #         jar.compose 'up -d'
@@ -55,19 +62,19 @@ module Compote
 #         require "#{Dir.pwd}/#{Compote::Jar::JAR_SRC_CONFIG_PATH}/recipe.rb"
 #         Compote.log :green, 'the compote has been brewed'
 #       end
-#
-#       @jar_commands.add 'auto_brew', 'Sets the git-push mechanism [0,1]' do |args|
-#         value = CommandRunner.shift_parameter! args, 'pass 0 or 1'
-#         file = '.brew_on_push'
-#         if value == '1'
-#           File.write file, '' unless File.exist? file
-#           Compote.log :green, 'jar will brew on git-push'
-#         else
-#           File.delete file if File.exist? file
-#           Compote.log :yellow, 'brew on git-push is off'
-#         end
-#       end
-#
+
+      @jar_commands.add 'auto_brew', 'Sets the git-push mechanism [0,1]' do |args|
+        value = shift_param! args, 'pass 0 or 1'
+        file = '.brew_on_push'
+        if value == '1'
+          Compote.run 'sudo touch .brew_on_push'
+          Compote.log :green, 'jar will brew on git-push'
+        else
+          Compote.run 'sudo rm .brew_on_push'
+          Compote.log :green, 'brew on git-push is off'
+        end
+      end
+
 #       @jar_commands.add 'irb', 'Opens ruby console at the jar path' do
 #         require 'irb'
 #         binding.irb

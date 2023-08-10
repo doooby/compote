@@ -16,13 +16,13 @@ module Compote
     end
 
     @commands.add 'new', 'creates new empty jar' do |args|
-      name = shift_jar_name! args
-      jar = Jar.new name
+        puts args.to_a
+      jar = get_jar! args
       if jar.exists?
         Compote.log :red, 'jar already exists'
         exit 1
       else
-        Compote.run "sudo mkdir -p #{Compote.shelf_dir!.join name}"
+        Compote.run "sudo mkdir -p #{Compote.shelf_dir!.join jar.name}"
       end
       jar.initialize_jar!
       git_path = Pathname.new(Dir.pwd).join('.git').to_s
@@ -30,12 +30,11 @@ module Compote
     end
 
     @commands.add 'ls', 'list jars' do
-    #       Compote.run "ls -la #{Compote.shelf_dir!}"
+        exec "ls -l #{Compote.shelf_dir!}"
     end
 
     @commands.add 'remove', 'destroys the jar and clears the dir' do |args|
-      name = shift_jar_name! args
-     jar = Jar.new name
+     jar = jar = get_jar! args
      unless jar.exists?
          Compote.log :yellow, 'jar doesn\'t exist'
          exit 0
@@ -48,16 +47,10 @@ module Compote
       Compote.run "sudo rm -rf #{jar.path}"
     end
 
-    @commands.add 'path', 'prints path of the jar' do |args|
-    #       Compote.mute!
-    #       name = Jar.shift_jar_name args
-    #       Jar.with_jar! name
-    #       puts Dir.pwd
-    end
-
     @commands.add 'irb', 'opens irb console with this library' do
       require 'irb'
       binding.irb
     end
+
   end
 end

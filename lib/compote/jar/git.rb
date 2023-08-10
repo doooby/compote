@@ -3,19 +3,19 @@
 module Compote
   class Jar
 
-#       def checkout_source
-#         unless Dir.exist? 'src'
-#           Compote.run 'git clone --single-branch --branch main .git src'
-#         end
-#         Compote.run <<-COMMAND
-# ( \
-#   cd src && \
-#   git fetch origin && \
-#   git reset --hard origin/main && \
-#   git clean -fdx \
-# )
-# COMMAND
-#       end
+      def checkout_source!
+        unless Dir.exist? 'src'
+          Compote.run 'sudo git clone --single-branch --branch main .git src'
+        end
+        Compote.run <<-CMD.strip
+sudo bash -c "( \\
+  cd src && \\
+  git fetch origin && \\
+  git reset --hard origin/main && \\
+  git clean -fdx \\
+)"
+CMD
+      end
 
       def initialize_repo!
         hook_src = LIB_PATH.join 'git_hooks/post_receive.sh'

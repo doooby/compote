@@ -11,15 +11,15 @@ module Compote
         Dir.exist? path
     end
 
-      def open_dir!
-        unless exists?
-          Compote.log :yellow, "jar #{@name} doesn't exist"
-          exit 1
-        end
-        Compote.log :blue, "cd #{path}"
-        Dir.chdir path
-        path
-      end
+  def open_dir!
+    unless exists?
+      Compote.log :yellow, "jar #{@name} doesn't exist"
+      exit 1
+    end
+    Compote.log :blue, "cd #{path}"
+    Dir.chdir path
+    path
+  end
 
   def initialize_jar!
     open_dir!
@@ -27,17 +27,15 @@ module Compote
     # create structure
     Compote.run <<-CMD.strip
 sudo bash -c "\\
-    mkdir var && \\
-    mkdir tmp && \\
-    chown root:compote tmp && \\
-    chmod +t tmp
+    mkdir var && chmod 700 var && \\
+    mkdir tmp && chown root:compote tmp && chmod 770 tmp && \\
+    touch jar.conf && chmod 640 jar.conf
 "
     CMD
 
     # create config
-    Compote.run 'sudo touch jar.conf'
     Compote.log :yellow, 'filling-in defaults'
-    system 'sudo chmod a+w jar.conf'
+    system 'sudo chmod o+w jar.conf'
     File.write 'jar.conf', [
       "JAR_NAME=#{name}",
       "JAR_PATH=#{Dir.pwd}",
@@ -46,7 +44,7 @@ sudo bash -c "\\
       'NODE_ENV=production',
       nil
     ].join("\n")
-    system 'sudo chmod a-w jar.conf'
+    system 'sudo chmod o-w jar.conf'
     Compote.run 'sudo ln -s jar.conf .env' # config for docker compose
 
     initialize_repo!

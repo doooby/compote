@@ -16,15 +16,9 @@ module Compote
         shift_param! args, 'jar name missing'
       end
 
-      def self.with_jar! name
-      raise 'niy'
-#         jar = get_jar name
-#         unless jar
-#           Compote.log :red, 'jar doesn\'t exist'
-#           exit 1
-#         end
-#         jar.open_dir!
-#         jar
+      def self.get_jar! args
+        name = shift_jar_name! args
+        Jar.new name
       end
 
     class Commands
