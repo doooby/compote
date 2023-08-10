@@ -3,7 +3,9 @@ Docker-based tool to run services.
 
 The **aim** of this is not to apply the best standards or be super performant but rather a **simple** solution for **git-push deployment** of containers on **own servers**.
 
-Each service is represented as a **compote jar** - a dedicated directory that holds configuration and git source code, optionally cached libraries, data to be persisted, etc.
+Each service is represented as a **"compote jar"** - a dedicated directory that holds configuration and git source code, optionally cached libraries, data to be persisted, etc.
+
+You define your own scripts inside the project, that does all necessary work before a release docker image can be built and containers run. These scripts are run as the deployer user and give you simple access to compote tasks to run containers and access the jar's directory. The compote cli runner is elevated to root to be able to do stuff.
 
 ## Requirements
 
@@ -24,18 +26,17 @@ Root access is enough as compote-cli is always called with sudo.
 
 ## Install
 
-download compote:
+ssh to the server and download compote:
 ```shell
-sudo mkdir /opt/compote && sudo chown `whoami` /opt/compote
-git clone https://github.com/doooby/compote.git /opt/compote
+sudo git clone https://github.com/doooby/compote.git /opt/compote
 # optionally switch branch
-(cd /opt/compote && git checkout main-v2)
-# install the entry point for the user
-/opt/compote/bin/user_install.rb ~/.compote/cli
+(cd /opt/compote && sudo git checkout main-v2)
 ```
 
-log off and on again
 ```shell
+# as the deployer user
+/opt/compote/bin/user_install.rb
+# log off and on again
 # now you can run compote using alias
 compote ls
 ```

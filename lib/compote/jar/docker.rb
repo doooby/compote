@@ -74,12 +74,12 @@ docker build \
       end
 
       def command_compose
-        <<-COMMAND.strip
-docker compose \
-  -f #{JAR_SRC_CONFIG_PATH}/docker-compose.yml \
-  --env-file .env \
-  -p jar_#{@name} \
-        COMMAND
+#         <<-COMMAND.strip
+# docker compose \
+#   -f #{JAR_SRC_CONFIG_PATH}/docker-compose.yml \
+#   --env-file .env \
+#   -p jar_#{@name} \
+#         COMMAND
       end
 
     end
