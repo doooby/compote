@@ -26,11 +26,6 @@ module Compote
         @jar.checkout_source!
       end
 
-#       @jar_commands.add 'make_base', 'Crates the base docker images' do
-#         jar.build_base
-#         Compote.log :green, 'base images built'
-#       end
-#
       @jar_commands.add 'path', 'prints path in the shelf' do
         puts @jar.path.to_path
       end
@@ -39,29 +34,19 @@ module Compote
         @jar.open_dir!
         exec 'sudo nano jar.conf'
       end
-#
-#       @jar_commands.add 'up', 'Starts all the containers' do
-#         jar.compose 'up -d'
-#       end
-#
-#       @jar_commands.add 'down', 'Stops all the containers' do
-#         jar.compose 'down'
-#       end
-#
-#       @jar_commands.add 'compose', 'runs docker compose with arguments' do |args|
-#         Compote.exec "#{jar.command_compose} #{args.join ' '}"
-#       end
-#
-#       @jar_commands.add 'bash', 'Runs bash on a temporary container' do
-#         Compote.exec "#{jar.command_compose} run --rm app bash"
-#       end
-#
-#       @jar_commands.add 'brew', 'Brews the compote, aka. release' do
-#         jar.checkout_source
-#         Object.const_set 'JAR', jar
-#         require "#{Dir.pwd}/#{Compote::Jar::JAR_SRC_CONFIG_PATH}/recipe.rb"
-#         Compote.log :green, 'the compote has been brewed'
-#       end
+
+      @jar_commands.add 'clean_dockerignore', 'Removes dangling .dockerignore file' do
+        @jar.open_dir!
+        @jar.clean_dockerignore!
+      end
+
+      @jar_commands.add 'run', 'Runs a source-code script' do |args|
+        @jar.open_dir!
+        name = shift_param! args, 'script name missing'
+        $jar = @jar
+        $args = args
+        load "src/.compote/scripts/#{name}.rb"
+      end
 
       @jar_commands.add 'auto_brew', 'Sets the git-push mechanism [0,1]' do |args|
         value = shift_param! args, 'pass 0 or 1'
@@ -75,10 +60,18 @@ module Compote
         end
       end
 
-#       @jar_commands.add 'irb', 'Opens ruby console at the jar path' do
-#         require 'irb'
-#         binding.irb
-#       end
+      @jar_commands.add 'brew', 'updates the source code and runs brew script' do |args|
+        @jar.open_dir!
+        @jar.checkout_source!
+        $jar = @jar
+        load "src/.compote/scripts/brew.rb"
+      end
+
+      @jar_commands.add 'd', 'executes a command of docker-compose' do |args|
+          @jar.open_dir!
+          Compote.run @jar.compose_cmd(args.join ' ')
+        end
+
   end
 end
     

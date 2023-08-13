@@ -4,7 +4,7 @@ module Compote
   class Jar
 
     def path
-        @path ||= Compote.shelf_dir!.join(@name)
+        @path ||= Compote.shelf_dir!.join(name)
     end
 
     def exists?
@@ -13,7 +13,7 @@ module Compote
 
   def open_dir!
     unless exists?
-      Compote.log :yellow, "jar #{@name} doesn't exist"
+      Compote.log :yellow, "jar #{name} doesn't exist"
       exit 1
     end
     Compote.log :blue, "cd #{path}"

@@ -17,7 +17,8 @@ module Compote
   end
 
   def self.run cmd
-    log :blue, cmd
+    print '$ '
+    cmd.split("\n"){ log :blue, _1 }
 
     command_out, _, pid = PTY.spawn cmd
     begin
@@ -42,31 +43,11 @@ module Compote
     puts text.send(colorize) unless @mute
   end
 
-#   def self.choose_jar!
-#     jars = nil
-#     Dir.chdir shelf_dir! do
-#       jars = Dir.glob('*').select{ File.directory? _1 }
-#     end
-#
-#     if jars.empty?
-#       log :red, 'shelf is empty'
-#       exit 1
-#     else
-#       prompt = TTY::Prompt.new
-#       prompt.select 'Choose jar', jars
-#     end
-#   end
-
   def self.shelf_dir!
     @shelf_dir ||= begin
       path = '/var/compote_shelf'
       unless Dir.exist? path
-        Compote.run <<-CMD.strip
-shelf_path=#{path} && \\
-sudo mkdir -p $shelf_path && \\
-sudo chown root:compote $shelf_path && \\
-sudo chmod 750 $shelf_path
-        CMD
+        Compote.run "sudo mkdir -p #{path}"
         log :yellow, 'created shelf for compote jars'
       end
       Pathname.new path
