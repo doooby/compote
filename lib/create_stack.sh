@@ -68,7 +68,7 @@ touch $stack_conf
 ln -s $stack_conf .env
 {
   echo "STACK_NAME=$name";
-  echo "STACK_PATH=$stack_path";
+  echo "BOOK_PATH=$stack_path";
   echo "RACK_ENV=production";
 } >> $stack_conf
 
@@ -85,7 +85,7 @@ chown root:$name -R .git
 find $repository -type d | xargs chmod 0770
 find $repository -type f | xargs chmod 440
 ln -s ../../ops/lib/git/post-receive-hook.sh $git_hook
-chgrp -h $name $git_hook
+chgrp -hR $name $git_hook
 
 cat << HEREDOC
 
