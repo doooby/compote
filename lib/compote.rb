@@ -5,6 +5,7 @@ require 'io/console'
 require 'pty'
 require 'colorize'
 require 'tty-prompt'
+require 'dotenv'
 
 LIB_PATH = Pathname.new(__FILE__ ).join '..'
 
@@ -17,6 +18,7 @@ module Compote
   end
 
   def self.run cmd
+    cmd = cmd.strip
     print '$ '
     cmd.split("\n"){ log :blue, _1 }
 
@@ -33,6 +35,13 @@ module Compote
       log :red, "exited with #{status.exitstatus}"
       exit status.exitstatus
     end
+  end
+
+  def self.exec cmd
+    cmd = cmd.strip
+    print '$ '
+    cmd.split("\n"){ log :blue, _1 }
+    Kernel.exec cmd
   end
 
   def self.mute!

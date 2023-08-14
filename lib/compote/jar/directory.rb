@@ -25,11 +25,11 @@ module Compote
     open_dir!
 
     # create structure
-    Compote.run <<-CMD.strip
+    Compote.run <<-CMD
 sudo bash -c "\\
     mkdir var && chmod 700 var && \\
     mkdir tmp && chown root:compote tmp && chmod 770 tmp && \\
-    touch jar.conf && chmod 640 jar.conf
+    touch jar.conf && chown root:compote jar.conf && chmod 640 jar.conf
 "
     CMD
 

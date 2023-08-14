@@ -30,9 +30,9 @@ module Compote
         puts @jar.path.to_path
       end
 
-      @jar_commands.add 'conf', 'Opens jar.conf in nano' do
+      @jar_commands.add 'config', 'Opens jar.conf in nano' do
         @jar.open_dir!
-        exec 'sudo nano jar.conf'
+        Compote.exec 'sudo nano jar.conf'
       end
 
       @jar_commands.add 'clean_dockerignore', 'Removes dangling .dockerignore file' do
@@ -67,10 +67,10 @@ module Compote
         load "src/.compote/scripts/brew.rb"
       end
 
-      @jar_commands.add 'd', 'executes a command of docker-compose' do |args|
-          @jar.open_dir!
-          Compote.run @jar.compose_cmd(args.join ' ')
-        end
+      @jar_commands.add 'compose', 'executes a command of docker-compose' do |args|
+        @jar.open_dir!
+        Compote.exec @jar.compose_cmd(args.join ' ')
+      end
 
   end
 end

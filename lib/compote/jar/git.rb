@@ -7,7 +7,7 @@ module Compote
         unless Dir.exist? 'src'
           Compote.run 'sudo git clone --single-branch --branch main .git src'
         end
-        Compote.run <<-CMD.strip
+        Compote.run <<-CMD
 sudo bash -c "( \\
   cd src && \\
   git fetch origin && \\
@@ -20,7 +20,7 @@ CMD
       def initialize_repo!
         hook_src = LIB_PATH.join 'git_hooks/post_receive.sh'
         Compote.log :yellow, 'setting up git repository'
-        Compote.run <<-CMD.strip
+        Compote.run <<-CMD
 sudo bash -c "\\
     git init -q --bare .git && \\
     rm .git/hooks/* && \\

@@ -30,7 +30,7 @@ module Compote
     end
 
     @commands.add 'ls', 'list jars' do
-        exec "ls -l #{Compote.shelf_dir!}"
+        Compote.exec "ls -l #{Compote.shelf_dir!}"
     end
 
     @commands.add 'remove', 'destroys the jar and clears the dir' do |args|

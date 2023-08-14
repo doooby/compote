@@ -18,7 +18,7 @@ This tool expects that you access the server as a non-root user with password-le
 ##### ruby
 System-wide installation with the following gems required. Developed with 3.0 version.
 ```shell
-sudo gem install colorize tty-prompt
+sudo gem install colorize tty-prompt dotenv
 ```
 
 ##### docker & docker compose

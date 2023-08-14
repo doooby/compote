@@ -25,13 +25,13 @@ module Compote
       end
 
       def compose_cmd cmd
-        <<-COMMAND.strip
+        <<-CMD.strip
 sudo docker compose \\
   -f src/.compote/docker-compose.yml \\
   --env-file .env \\
   -p jar_#{name} \\
   #{cmd}
-COMMAND
+CMD
       end
 
   end
