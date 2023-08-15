@@ -3,17 +3,15 @@
 
 require_relative '../lib/bin/base'
 
-destination = '~/compote_runner'
-Compote.run "cp #{LIB_PATH.join 'bin/cli_runner.sh'} #{destination}"
-Compote.run "chmod u+x #{destination}"
+cli_path = '/opt/compote/bin/cli.rb'
 
 bashrc_path = Pathname.new(File.expand_path '~').join '.bashrc'
 File.open bashrc_path, 'a' do |f|
   f.write <<-HEREDOC
 
 # compote
-alias compote=#{destination}
-alias jar="#{destination} jar"
+alias compote=#{cli_path}
+alias jar="#{cli_path} jar"
 HEREDOC
 end
 puts 'added alias to .bashrc'.green

@@ -3,7 +3,7 @@ Docker-based tool to run services.
 
 The **aim** of this is not to apply the best standards or be super performant but rather a **simple** solution for **git-push deployment** of containers on **own servers**.
 
-Each service is represented as a **compote jar** - a dedicated directory that holds configuration and git source code, optionally cached libraries, data to be persisted, etc.
+Each project is represented as a **compote jar** - a dedicated directory that holds configuration and git source code, optionally cached libraries, data to be persisted, etc.
 
 ## Requirements
 
@@ -16,20 +16,17 @@ This tool expects that you access the server as a non-root user with password-le
 ##### ruby
 System-wide installation with the following gems required. Developed with 3.0 version.
 ```shell
+sudo apt install ruby
 sudo gem install colorize tty-prompt
 ```
-
-##### docker & docker compose
-Root access is enough as compote-cli is always called with sudo.
 
 ## Install
 
 download compote:
 ```shell
-sudo mkdir /opt/compote && sudo chown `whoami` /opt/compote
-git clone https://github.com/doooby/compote.git /opt/compote
-# optionally switch branch
-(cd /opt/compote && git checkout main-v2)
+sudo git clone https://github.com/doooby/compote.git /opt/compote
+```
+```shell
 # install the entry point for the user
 /opt/compote/bin/user_install.rb ~/.compote/cli
 ```
