@@ -35,8 +35,8 @@ sudo bash -c "\\
 
     # create config
     Compote.log :yellow, 'filling-in defaults'
-    system 'sudo chmod o+w jar.conf'
-    File.write 'jar.conf', [
+    temp_conf = Tempfile.new('jar.conf')
+    temp_conf.write [
       "JAR_NAME=#{name}",
       "JAR_PATH=#{Dir.pwd}",
       nil,
@@ -44,8 +44,8 @@ sudo bash -c "\\
       'NODE_ENV=production',
       nil
     ].join("\n")
-    system 'sudo chmod o-w jar.conf'
-    Compote.run 'sudo ln -s jar.conf .env' # config for docker compose
+    temp_conf.flush
+    system "sudo bash -c 'cat #{temp_conf.path} > jar.conf'"
 
     initialize_repo!
     Compote.log :green, "created jar #{name}"
