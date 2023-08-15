@@ -29,7 +29,7 @@ module Compote
 sudo bash -c "\\
     mkdir var && chmod 700 var && \\
     mkdir tmp && chown root:compote tmp && chmod 770 tmp && \\
-    touch jar.conf && chown root:compote jar.conf && chmod 640 jar.conf
+    touch jar.conf && chown root:compote jar.conf && chmod 640 jar.conf && \\
     ln -s jar.conf .env
 "
     CMD
