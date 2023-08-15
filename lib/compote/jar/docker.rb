@@ -2,86 +2,37 @@
 
 module Compote
   class Jar
-    module Docker
 
+      def dockerignore_path
+       @dockerignore_path ||= path.join(IGNORE_FILE)
+      end
       IGNORE_FILE = '.dockerignore'
 
-      def image_path image_name
-        "#{JAR_SRC_CONFIG_PATH}/images/#{image_name}"
-      end
-
-      def image_tag image_name
-        "jar--#{@name}--#{image_name}"
-      end
-
-      def clear_for_build!
-        if File.exist? IGNORE_FILE
-          Compote.log :red, "#{IGNORE_FILE} is present."
-          Compote.log :white, 'either another build is in progress' +
-            ' or the previous one failed.'
-          exit 1
-        end
-      end
-
-      def build_base
-        clear_for_build!
-        dockerfile_path = prepare_for_build 'base'
-        Compote.run <<-COMMAND
-docker build \
-  -f #{dockerfile_path} \
-  -t #{image_tag 'base'} \
-  .
-        COMMAND
-        Compote.run "rm #{IGNORE_FILE}"
-      end
-
-      def stack image, options, command
-        Compote.run <<-COMMAND
-docker run --rm \
-  --env-file .env \
-  #{options.join '   '} \
-  #{image_tag image} \
-  bash -c \
-  "#{command.strip.gsub '"', '\"'}"
-        COMMAND
-      end
-
-      def brew image
-        clear_for_build!
-        dockerfile_path = prepare_for_build image
-        Compote.run <<-COMMAND
-docker build \
-  -f #{dockerfile_path} \
-  -t #{image_tag image} \
-  --build-arg BASE_IMAGE=#{image_tag 'base'} \
-  .
-        COMMAND
-        Compote.run "rm #{IGNORE_FILE}"
-      end
-
-      def compose args
-        Compote.run "#{command_compose}   #{args}"
-      end
-
-      def prepare_for_build image_name
-        path = image_path image_name
-        ignore_file = "#{path}/#{IGNORE_FILE}"
-        ignore = if File.exists? ignore_file
-          File.read ignore_file
-        end
-        File.write IGNORE_FILE, "*\n#{ignore}"
-        "#{path}/Dockerfile"
-      end
-
-      def command_compose
-        <<-COMMAND.strip
-docker compose \
-  -f #{JAR_SRC_CONFIG_PATH}/docker-compose.yml \
-  --env-file .env \
-  -p jar_#{@name} \
-        COMMAND
-      end
-
+    def clean_dockerignore!
+      Compote.run "sudo rm -f #{dockerignore_path}"
     end
+
+      def with_dockerignore content
+        if File.exist? dockerignore_path
+            Compote.log :red, "#{dockerignore_path} is present."
+            Compote.log :white, 'either another build is in progress' +
+              ' or the previous one failed.'
+            exit 1
+        end
+        Compote.run "echo '*\n#{content}' | sudo tee #{dockerignore_path} > /dev/null"
+        yield
+        clean_dockerignore!
+      end
+
+      def compose_cmd cmd
+        <<-CMD.strip
+sudo docker compose \\
+  -f src/.compote/docker-compose.yml \\
+  --env-file .env \\
+  -p jar_#{name} \\
+  #{cmd}
+CMD
+      end
+
   end
 end
