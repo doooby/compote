@@ -12,7 +12,7 @@ module Compote
       Compote.run "sudo rm -f #{dockerignore_path}"
     end
 
-      def with_dockerignore content
+      def with_dockerignore content=nil
         if File.exist? dockerignore_path
             Compote.log :red, "#{dockerignore_path} is present."
             Compote.log :white, 'either another build is in progress' +
