@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'pathname'
+require 'tempfile'
 require 'io/console'
 require 'pty'
 require 'colorize'
