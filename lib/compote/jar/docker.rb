@@ -29,7 +29,7 @@ module Compote
 sudo docker compose \\
   -f src/.compote/docker-compose.yml \\
   --env-file .env \\
-  -p jar_#{name} \\
+  -p jar--#{name} \\
   #{cmd}
 CMD
       end

@@ -57,7 +57,7 @@ module Compote
 
     @jar_commands.add 'auto_brew', 'Sets the git-push mechanism [0,1]' do |args|
       value = shift_param! args, 'pass 0 or 1'
-      file = '.brew_on_push'
+      @jar.open_dir!
       if value == '1'
         Compote.run 'sudo touch .brew_on_push'
         Compote.log :green, 'jar will brew on git-push'
