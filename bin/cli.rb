@@ -5,5 +5,5 @@ require_relative '../lib/compote'
 require_relative '../lib/compote/cli'
 
 Compote.with_gracious_interrupt do
-  Compote::Cli.command_runner.run! ARGV.shift, ARGV
+  Compote::Cli.commands.run! ARGV.shift, ARGV
 end
