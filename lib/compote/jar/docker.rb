@@ -28,7 +28,7 @@ module Compote
         <<-CMD.strip
 sudo docker compose \\
   -f src/.compote/docker-compose.yml \\
-  --env-file .env \\
+  --env-file #{path.join '.env'} \\
   -p jar--#{name} \\
   #{cmd}
 CMD
