@@ -5,7 +5,7 @@ The **aim** of this is not to apply the best standards or be super performant bu
 
 Each project is represented as a **"compote jar"** - a dedicated directory that holds configuration and git source code, optionally cached libraries, data to be persisted, etc.
 
-You define your own scripts inside the project, that does all necessary work before a release docker image can be built and containers run. These scripts are run as the deployer user and give you simple access to compote tasks to run containers and access the jar's directory. The compote cli runner is elevated to root to be able to do stuff.
+You define your own scripts inside the project, which do all the necessary work before a release docker image can be built and the container run. These scripts are run as the deployer user.
 
 ## Requirements
 

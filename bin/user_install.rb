@@ -3,31 +3,18 @@
 
 require_relative '../lib/compote'
 
-destination = File.expand_path '~/compote_cli'
-
-if File.exist? destination
-    Compote.log :red, "runner already exists: #{destination}"
-    exit 1
-end
-
-Compote.run "touch #{destination}"
-File.write destination, <<-CONTENT
-#!/usr/bin/env sh
-exec ruby #{LIB_PATH.join '../bin/cli.rb'} "$@"
-CONTENT
-Compote.run "chmod 500 #{destination}"
-Compote.log :green, "added cli entrypoint"
+cli_path = '/opt/compote/bin/cli.rb'
 
 bashrc_path = Pathname.new(File.expand_path '~').join '.bashrc'
 File.open bashrc_path, 'a' do |f|
   f.write <<-HEREDOC
 
 # compote
-alias compote=#{destination}
-alias jar="#{destination} jar"
+alias compote=#{cli_path}
+alias jar="#{cli_path} jar"
 HEREDOC
 end
-Compote.log :green, 'added aliases "compote", "jar" to .bashrc'
+Compote.log :green, 'added aliases "compote" & "jar" to .bashrc'
 
 user = `whoami`
 Compote.run <<-COMMAND

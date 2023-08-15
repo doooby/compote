@@ -1,5 +1,0 @@
-!ops/etc/nginx/release/entrypoint.sh
-!ops/lib/nginx/update_certificate.sh
-!ops/etc/nginx/app.conf
-!src/public
-!var/frontend
