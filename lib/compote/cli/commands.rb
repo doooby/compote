@@ -52,5 +52,9 @@ module Compote
       binding.irb
     end
 
+    @commands.add 'whereis', 'prints path to the library' do
+      puts __FILE__
+    end
+
   end
 end

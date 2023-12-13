@@ -43,6 +43,10 @@ module Compote
     @jar_commands.add 'run', 'Runs a source-code script' do |args|
       @jar.open_dir!
       name = shift_param! args, 'script name missing'
+      if name == '-l'
+        puts Dir.glob('src/.compote/scripts/*.rb').map{ File.basename _1, '.rb' }
+        exit 2
+      end
       $jar = @jar
       $args = args
       load "src/.compote/scripts/#{name}.rb"
@@ -81,4 +85,3 @@ module Compote
 
   end
 end
-    
