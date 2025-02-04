@@ -58,6 +58,7 @@ compote new app
 # which print as last line: `git repository path: /var/compote_shelf/app/.git`
 # add this as a remote and `git push` to it
 
+jar app config # set environment variables in `.env` (all build and runtime processes inherits these)
 jar app update # updates the source code internaly
 jar app run build_base # runs .compote/scripts/build_base.rb
 jar app brew # deploy, i.e. it runs .compote/scripts/brew.rb
