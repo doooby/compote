@@ -7,6 +7,9 @@ Each project is represented as a **"compote jar"** - a dedicated directory that 
 
 You define your own scripts inside the project, which do all the necessary work before a release docker image can be built and the container run. These scripts are run as the deployer user.
 
+## Is it any good?
+[yes](https://news.ycombinator.com/item?id=3067434)
+
 ## Requirements
 
 ##### system
