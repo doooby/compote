@@ -36,6 +36,7 @@ sudo git clone https://github.com/doooby/compote.git /opt/compote
 
 As the deployer user, that has sudo access:
 ```shell
+# always read and understand the script before you run it!
 /opt/compote/bin/user_install.rb
 ```
 
