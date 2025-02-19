@@ -19,7 +19,7 @@ GNU/Linux, bash. Developed on Ubuntu server 22.04.
 This tool expects that you access the server as a non-root user with password-less sudo provided.
 
 ##### docker
-this tool is docker-based, please head to (https://docs.docker.com/engine/install/)[docker install docs] to install it.
+this tool is docker-based, please head to [docker install docs](https://docs.docker.com/engine/install/) to install it.
 
 ##### ruby
 System-wide installation with the following gems required. Developed with 3.0 version.
