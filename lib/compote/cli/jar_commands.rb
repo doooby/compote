@@ -32,7 +32,7 @@ module Compote
 
     @jar_commands.add 'config', 'Opens jar.conf in nano' do
       @jar.open_dir!
-      Compote.exec 'sudo nano jar.conf'
+      Compote.exec 'sudo vim jar.conf'
     end
 
     @jar_commands.add 'clean_dockerignore', 'Removes dangling .dockerignore file' do
