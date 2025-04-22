@@ -18,10 +18,14 @@ Compote.log :green, 'added aliases "compote" & "jar" to .bashrc'
 
 user = `whoami`
 Compote.run <<-COMMAND
+# setup the user's group privilege
 if ! grep "^compote:" /etc/group > /dev/null; then
   sudo groupadd compote
 fi
 sudo usermod -a -G compote #{user}
+
+# ignore this git safety measure, we intend to work with the repo using group permisions
+git config --global safe.directory "*"
 COMMAND
 
 Compote.log :green, 'done'
